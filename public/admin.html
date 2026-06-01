@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель Ввода Статистики HLTV | CS2 Fantasy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-layout {
+            background: linear-gradient(135deg, rgba(45, 45, 50, 1) 0%, var(--color-surface) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .match-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .select-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 250px;
+        }
+
+        select, .admin-input {
+            width: 100%;
+            padding: 12px;
+            background: #131417;
+            border: 1px solid rgba(225,225,245,0.15);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+            select:focus, .admin-input:focus {
+                border-color: var(--color-primary);
+                outline: none;
+            }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+            .stats-table th, .stats-table td {
+                padding: 10px;
+                border-bottom: 1px solid rgba(225, 225, 245, 0.05);
+                text-align: center;
+            }
+
+            .stats-table th {
+                background: rgba(0,0,0,0.4);
+                color: var(--color-primary);
+                text-transform: uppercase;
+                font-family: 'Impact', sans-serif;
+                font-style: italic;
+            }
+
+            .stats-table td input {
+                width: 55px;
+                padding: 6px;
+                background: #000;
+                border: 1px solid #333;
+                color: #fff;
+                border-radius: 4px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+                .stats-table td input:focus {
+                    border-color: var(--color-success);
+                    outline: none;
+                }
+
+        .player-row-name {
+            text-align: left;
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--color-primary);
+        }
+
+        .team-title-banner {
+            background: var(--color-surface);
+            padding: 10px;
+            font-family: 'Impact', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            border-left: 4px solid var(--color-primary);
+            margin-top: 25px;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <h1 class="header__title">CS2 <span>Fantasy Admin</span></h1>
+            <div class="stats-bar"><a href="/index.html" class="btn btn--buy" style="width: auto; margin: 0; padding: 10px 20px;">К маркету</a></div>
+        </div>
+    </header>
+
+    <div class="ticker-wrapper">
+        <div class="ticker__title">ADMIN PANEL</div>
+        <div class="ticker" id="ranking-list"></div>
+    </div>
+
+    <main class="main container">
+        <h2 class="section-title">Ввод официальных результатов матча (HLTV)</h2>
+
+        <div class="admin-layout">
+            <div class="match-selector">
+                <div class="select-group">
+                    <label>Команда 1 (Left):</label>
+                    <select id="team1-select" onchange="generatePlayersTables()"></select>
+                </div>
+                <div style="font-family:'Impact', sans-serif; font-size: 32px; color: var(--color-primary); display:flex; align-items:center; font-style:italic;">VS</div>
+                <div class="select-group">
+                    <label>Команда 2 (Right):</label>
+                    <select id="team2-select" onchange="generatePlayersTables()"></select>
+                </div>
+            </div>
+
+            <div id="players-forms-container">
+                <p style="text-align:center; color: var(--color-text-muted);">Выберите команды участники матча для заполнения протокола статистики...</p>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid rgba(225,225,245,0.1); padding-top: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                <input type="password" id="admin-key" class="admin-input" placeholder="Введите секретный ADMIN_SECRET_KEY" style="max-width: 350px; margin: 0;">
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%;">
+                    <!-- Кнопка 1: Считает конкретный матч (можно нажимать много раз за тур) -->
+                    <button class="btn" id="btn-submit-stats" style="background: var(--color-success); color: #fff; width: auto; padding: 15px 35px; font-weight: bold; border-radius: 6px;">
+                        📊 Внести статистику матча
+                    </button>
+
+                    <!-- Кнопка 2: Закрывает тур целиком (нажимается 1 раз в самом конце) -->
+                    <button class="btn" id="btn-close-tour" style="background: var(--color-danger); color: #fff; width: auto; padding: 15px 35px; font-weight: bold; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                        🔒 Официально закрыть и завершить Тур
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // База игроков для генерации форм в админке
+        const PLAYERS = [
+            { id: 1, name: 'apEx', team: 'Vitality', role: 'Капитан' },
+            { id: 2, name: 'ropz', team: 'Vitality', role: 'Рифлер' },
+            { id: 3, name: 'ZywOo', team: 'Vitality', role: 'Снайпер' },
+            { id: 4, name: 'flameZ', team: 'Vitality', role: 'Рифлер' },
+            { id: 5, name: 'mezii', team: 'Vitality', role: 'Рифлер' },
+            { id: 6, name: 'Aleksib', team: 'Natus Vincere', role: 'Капитан' },
+            { id: 7, name: 'iM', team: 'Natus Vincere', role: 'Рифлер' },
+            { id: 8, name: 'b1t', team: 'Natus Vincere', role: 'Рифлер' },
+            { id: 9, name: 'w0nderful', team: 'Natus Vincere', role: 'Снайпер' },
+            { id: 10, name: 'makazze', team: 'Natus Vincere', role: 'Рифлер' },
+            { id: 11, name: 'sh1ro', team: 'Spirit', role: 'Снайпер' },
+            { id: 12, name: 'magixx', team: 'Spirit', role: 'Капитан' },
+            { id: 13, name: 'tN1R', team: 'Spirit', role: 'Рифлер' },
+            { id: 14, name: 'zont1x', team: 'Spirit', role: 'Рифлер' },
+            { id: 15, name: 'donk', team: 'Spirit', role: 'Рифлер' }
+        ];
+
+        // Составляем уникальный список организаций
+        const teamsList = [...new Set(PLAYERS.map(p => p.team))];
+
+        function initSelectors() {
+            const s1 = document.getElementById('team1-select');
+            const s2 = document.getElementById('team2-select');
+
+            s1.innerHTML = '<option value="">-- Выберите клуб --</option>';
+            s2.innerHTML = '<option value="">-- Выберите клуб --</option>';
+
+            teamsList.forEach(t => {
+                s1.innerHTML += `<option value="${t}">${t}</option>`;
+                s2.innerHTML += `<option value="${t}">${t}</option>`;
+            });
+        }
+
+        // Рендеринг инпутов для игроков выбранных клубов
+        function generatePlayersTables() {
+            const t1 = document.getElementById('team1-select').value;
+            const t2 = document.getElementById('team2-select').value;
+            const container = document.getElementById('players-forms-container');
+
+            if (!t1 || !t2) {
+                container.innerHTML = '<p style="text-align:center; color: var(--color-text-muted);">Выберите обе команды матча...</p>';
+                return;
+            }
+            if (t1 === t2) {
+                container.innerHTML = '<p style="text-align:center; color: var(--color-danger); font-weight:bold;">Команда не может играть сама с собой!</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            [t1, t2].forEach(teamName => {
+                const teamPlayers = PLAYERS.filter(p => p.team === teamName);
+
+                let tableHtml = `
+                        <div class="team-title-banner">${teamName}</div>
+                        <table class="stats-table" data-team="${teamName}">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left;">Никнейм (Роль)</th>
+                                    <th>K (Убийства)</th>
+                                    <th>D (Смерти)</th>
+                                    <th>A (Ассисты)</th>
+                                    <th>FA (Флеш Ас)</th>
+                                    <th>EK (Энтри K)</th>
+                                    <th>ED (Энтри D)</th>
+                                    <th>Клатчи</th>
+    <th>Мульти</th>
+    <th>ADR</th>
+    <th>Swing %</th>
+    <th style="color: #fff; background: var(--color-primary);">Rating 3.0</th> <!-- НОВАЯ КОЛОНКА -->
+</tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                teamPlayers.forEach(p => {
+                    tableHtml += `
+                            <tr class="player-row" data-id="${p.id}">
+                                <td class="player-row-name">${p.name} <span style="font-size:10px; color:var(--color-text-muted);">(${p.role})</span></td>
+                                <td><input type="number" class="p-kills" value="15"></td>
+                                <td><input type="number" class="p-deaths" value="15"></td>
+                                <td><input type="number" class="p-assists" value="3"></td>
+                                <td><input type="number" class="p-flash" value="1"></td>
+                                <td><input type="number" class="p-ek" value="2"></td>
+                                <td><input type="number" class="p-ed" value="2"></td>
+                                <td><input type="number" class="p-clutches" value="0"></td>
+                                <td><input type="number" class="p-multi" value="1"></td>
+                                <td><input type="number" class="p-adr" value="75.0" step="0.1"></td>
+    <td><input type="number" class="p-swing" value="5.0" step="0.1"></td>
+    <td><input type="number" class="p-rating" value="1.00" step="0.01" style="border-color: var(--color-primary); width: 60px;"></td>
+</tr>
+                        `;
+                });
+
+                tableHtml += `</tbody></table>`;
+                container.innerHTML += tableHtml;
+            });
+        }
+
+        // Сбор данных из полей и отправка на Node.js бэкенд
+        document.getElementById('btn-submit-stats').addEventListener('click', async () => {
+            const secretKey = document.getElementById('admin-key').value;
+            if (!secretKey) { alert("Введите секретный ключ администратора!"); return; }
+
+            const rows = document.querySelectorAll('.player-row');
+            const playerStats = {};
+
+            rows.forEach(row => {
+                const id = row.getAttribute('data-id');
+                playerStats[id] = {
+                    kills: parseFloat(row.querySelector('.p-kills').value) || 0,
+                    deaths: parseFloat(row.querySelector('.p-deaths').value) || 1,
+                    assists: parseFloat(row.querySelector('.p-assists').value) || 0,
+                    flashAssists: parseFloat(row.querySelector('.p-flash').value) || 0,
+                    entryKills: parseFloat(row.querySelector('.p-ek').value) || 0,
+                    entryDeaths: parseFloat(row.querySelector('.p-ed').value) || 0,
+                    clutches: parseFloat(row.querySelector('.p-clutches').value) || 0,
+                    multikills: parseFloat(row.querySelector('.p-multi').value) || 0,
+                    adr: parseFloat(row.querySelector('.p-adr').value) || 75.0,
+                    swing: parseFloat(row.querySelector('.p-swing').value) || 5.0,
+                    rating: parseFloat(row.querySelector('.p-rating').value) || 1.00
+                };
+            });
+
+            try {
+                const res = await fetch('/api/admin/submit-match-stats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ secretKey, playerStats })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert("🔥 Матч успешно проведен! Реальные очки начислены участникам, составы сброшены под новый тур.");
+                    window.location.href = "/leaderboard.html";
+                } else {
+                    alert("Ошибка: " + data.message);
+                }
+            } catch (err) {
+                alert("Ошибка соединения с сервером.");
+            }
+        });
+        document.getElementById('btn-close-tour').addEventListener('click', async () => {
+            const secretKey = document.getElementById('admin-key').value;
+            if (!secretKey) { alert("Введите секретный ключ администратора!"); return; }
+
+            if (!confirm("Вы уверены, что хотите закрыть тур? Это действие очистит текущие составы у всех игроков и откроет рынок для новых трансферов!")) {
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/get-profile', { // временная заглушка роута для проверки связи
+                    method: 'GET'
+                });
+                const response = await fetch('/api/admin/close-tour', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ secretKey })
+                });
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert("🏆 " + data.message);
+                    window.location.href = "/leaderboard.html";
+                } else {
+                    alert("Ошибка: " + data.message);
+                }
+            } catch (err) {
+                alert("Ошибка соединения с сервером при закрытии тура.");
+            }
+        });
+
+        // Декоративный бегущий текст в шапке
+        function loadHLTV() {
+            const container = document.getElementById('ranking-list');
+            if (container) {
+                container.innerHTML = '<div class="ranking-item"><span class="ranking-item__place">★</span><span class="ranking-item__name">ADMIN PROTOCOL MODE</span><span class="ranking-item__points">SECURE</span></div>';
+            }
+        }
+
+        initSelectors();
+        loadHLTV();
+    </script>
+</body>
+</html>

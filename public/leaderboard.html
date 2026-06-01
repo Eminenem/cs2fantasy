@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейтинг предсказателей | CS2 Fantasy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для таблицы, гармонирующие с основным style.css */
+        .leaderboard-card {
+            background: linear-gradient(135deg, rgba(45, 45, 50, 1) 0%, var(--color-surface) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+            .leaderboard-table th, .leaderboard-table td {
+                padding: 16px 20px;
+                border-bottom: 1px solid rgba(225, 225, 245, 0.05);
+            }
+
+            .leaderboard-table th {
+                font-family: 'Impact', sans-serif;
+                font-style: italic;
+                letter-spacing: 1px;
+                color: var(--color-primary);
+                text-transform: uppercase;
+                font-size: 14px;
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            .leaderboard-table tr:hover td {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+        .rank-number {
+            font-family: 'Impact', sans-serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--color-primary);
+        }
+
+        .user-email {
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .user-score {
+            font-family: 'Impact', sans-serif;
+            font-size: 20px;
+            color: var(--color-primary);
+            text-align: right;
+        }
+        /* Золотая подсветка для топ-1 игрока */
+        .top-user td {
+            background: rgba(222, 155, 53, 0.05);
+        }
+
+        .top-user .rank-number {
+            text-shadow: 0 0 10px rgba(222, 155, 53, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <h1 class="header__title">CS2 <span style="color: rgba(200,200,200,0.85)">Fantasy</span></h1>
+            <div class="stats-bar">
+                <a href="/index.html" class="btn btn--buy" style="width: auto; margin: 0; padding: 10px 20px;">Назад к сборной</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Бегущая строка дублируется для сохранения атмосферы -->
+    <div class="ticker-wrapper">
+        <div class="ticker__title">HLTV TOP 20</div>
+        <div class="ticker" id="ranking-list"></div>
+    </div>
+
+    <main class="main container">
+        <section class="fantasy-team">
+            <h2 class="section-title">Топ предсказателей лиги</h2>
+
+            <div class="leaderboard-card">
+                <div class="table-responsive">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Место</th>
+                                <th>Участник турнира</th>
+                                <th style="text-align: right; width: 150px;">Очки</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-rows">
+                            <!-- Загрузка скриптом -->
+                            <tr>
+                                <td colspan="3" style="text-align: center; color: var(--color-text-muted);">Загрузка рейтинга...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>// Загрузка топа с сервера
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch('/api/leaderboard');
+                const data = await res.json();
+                const container = document.getElementById('leaderboard-rows');
+                container.innerHTML = '';
+
+                if (data.success && data.users.length > 0) {
+                    data.users.forEach((user, index) => {
+                        const row = document.createElement('tr');
+                        if (index === 0) row.className = 'top-user'; // Подсветить лидера
+
+                        row.innerHTML = `
+                            <td class="rank-number">#${index + 1}</td>
+                            <td class="user-email">${user.email}</td>
+                            <td class="user-score">${user.score}</td>
+                        `;
+                        container.appendChild(row);
+                    });
+                } else {
+                    container.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--color-text-muted);">Участников пока нет</td></tr>`;
+                }
+            } catch (err) {
+                console.error("Ошибка загрузки таблицы лидеров:", err);
+            }
+        }
+
+        // Логика бегущей строки (HLTV)
+        function loadHLTV() {
+            const container = document.getElementById('ranking-list');
+            if (!container) return;
+            const teams = [
+                { name: 'Vitality', points: 1000 }, { name: 'Natus Vincere', points: 709 }, { name: 'Spirit', points: 517 },
+                { name: 'Falcons', points: 508 }, { name: 'FURIA', points: 398 }, { name: 'Aurora', points: 346 },
+                { name: 'MOUZ', points: 302 }, { name: 'The MongolZ', points: 298 }
+            ];
+            container.innerHTML = '';
+            const html = teams.map((t, i) => `<div class="ranking-item"><span class="ranking-item__place">#${i+1}</span><span class="ranking-item__name">${t.name}</span><span class="ranking-item__points">${t.points}</span></div>`).join('');
+            container.innerHTML = html + html; // дубль
+        }
+
+        loadLeaderboard();
+        loadHLTV();</script>
+</body>
+</html>

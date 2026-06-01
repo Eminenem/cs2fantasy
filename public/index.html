@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Fantasy League</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+<body>
+    <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f14; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s;">
+        <div style="font-family: 'Impact', sans-serif; font-style: italic; font-size: 36px; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;">
+            CS2 <span style="color: #de9b35;">Fantasy</span>
+        </div>
+        <!-- Анимированная линия загрузки в стиле киберспортивных трансляций -->
+        <div style="width: 200px; height: 3px; background: rgba(255,255,245,0.05); border-radius: 2px; overflow: hidden; position: relative;">
+            <div style="width: 80px; height: 100%; background: #de9b35; position: absolute; border-radius: 2px; animation: loadingBar 1.5s ease-in-out infinite;"></div>
+        </div>
+        <p style="color: rgba(150,150,165,1); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; font-weight: bold;">Подключение к серверам лиги...</p>
+    </div>
+
+    <style>
+        @keyframes loadingBar {
+            0% {
+                left: -80px;
+            }
+
+            50% {
+                left: 200px;
+            }
+
+            100% {
+                left: 200px;
+            }
+        }
+    </style>
+    <header class="header">
+        <div class="container header__container">
+            <h1 class="header__title">CS2 <span style="color: rgba(200,200,200,0.85)">Fantasy</span></h1>
+            <div class="stats-bar">
+                <!-- Сюда app.js будет выводить статус: заблокирован состав или нет -->
+                <div class="stats-bar__item" id="lock-status" style="background: rgba(255, 74, 74, 0.1); color: var(--color-danger)">Загрузка статуса...</div>
+                <div class="stats-bar__item">Очки команды: <span id="score">0</span></div>
+                <!-- Кнопка перехода на страницу рейтинга предсказателей -->
+                <a href="/leaderboard.html" class="btn" style="background: var(--color-primary); color: #000; width: auto; padding: 10px 20px; font-weight: bold; text-decoration: none; border-radius: 6px; display: flex; align-items: center;">🏆 ТОП</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- НОВЫЙ БЛОК: Бегущая строка рейтинга HLTV -->
+    <div class="ticker-wrapper">
+        <div class="ticker__title">HLTV TOP 20</div>
+        <div class="ticker" id="ranking-list">
+            <!-- Карточки команд дублируются внутри JS для бесконечной ленты -->
+        </div>
+    </div>
+
+    <!-- Возвращаем стандартную чистую сетку без боковой панели -->
+    <main class="main container">
+        <!-- Сетка собранной команды -->
+        <section class="fantasy-team">
+            <h2 class="section-title">Ваша команда (<span id="team-count">0</span>/5)</h2>
+            <div class="team-slots" id="team-slots">
+                <!-- Слоты генерируются через JS -->
+            </div>
+            <!-- КНОПКА ИЗМЕНЕНА: Теперь она отправляет состав на бэкенд без симуляции в браузере -->
+            <button class="btn btn--primary" id="btn-calculate" disabled>Закрепить состав на Тур 1</button>
+        </section>
+
+        <!-- Рынок доступных игроков -->
+        <section class="market">
+            <h2 class="section-title">Доступные игроки</h2>
+            <div class="market-grid" id="market-grid">
+                <!-- Карточки генерируются через JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

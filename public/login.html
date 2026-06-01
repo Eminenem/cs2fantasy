@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация | CS2 Fantasy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: var(--color-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .auth-card {
+            background: linear-gradient(135deg, rgba(45, 45, 50, 0.95) 0%, rgba(25, 25, 30, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .auth-title {
+            font-family: 'Impact', sans-serif;
+            font-style: italic;
+            font-size: 28px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: var(--color-text);
+        }
+
+            .auth-title span {
+                color: var(--color-primary);
+            }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(225, 225, 245, 0.1);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 15px;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+
+            .tab-btn.active {
+                color: var(--color-primary);
+                border-bottom: 2px solid var(--color-primary);
+                margin-bottom: -2px;
+            }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+        }
+
+            .auth-form.active {
+                display: flex;
+            }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+            .input-group input {
+                width: 100%;
+                padding: 14px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(225, 225, 245, 0.15);
+                color: #fff;
+                border-radius: 6px;
+                font-size: 14px;
+                box-sizing: border-box;
+                transition: border-color 0.2s;
+            }
+
+                .input-group input:focus {
+                    border-color: var(--color-primary);
+                    outline: none;
+                }
+
+        .verification-notice {
+            display: none;
+            background: rgba(222, 155, 53, 0.1);
+            border: 1px solid var(--color-primary);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: var(--color-text);
+        }
+    </style>
+</head>
+<body>
+    <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f14; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s;">
+        <div style="font-family: 'Impact', sans-serif; font-style: italic; font-size: 36px; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;">
+            CS2 <span style="color: #de9b35;">Fantasy</span>
+        </div>
+        <!-- Анимированная линия загрузки в стиле киберспортивных трансляций -->
+        <div style="width: 200px; height: 3px; background: rgba(255,255,245,0.05); border-radius: 2px; overflow: hidden; position: relative;">
+            <div style="width: 80px; height: 100%; background: #de9b35; position: absolute; border-radius: 2px; animation: loadingBar 1.5s ease-in-out infinite;"></div>
+        </div>
+        <p style="color: rgba(150,150,165,1); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; font-weight: bold;">Подключение к серверам лиги...</p>
+    </div>
+
+    <style>
+        @keyframes loadingBar {
+            0% {
+                left: -80px;
+            }
+
+            50% {
+                left: 200px;
+            }
+
+            100% {
+                left: 200px;
+            }
+        }
+    </style>
+
+    <div class="auth-card">
+        <div class="auth-title">CS2 <span>Fantasy League</span></div>
+
+        <!-- Уведомление о необходимости подтвердить почту -->
+        <div class="verification-notice" id="verify-box">
+            📥 На вашу почту отправлено письмо со ссылкой. Пожалуйста, <b>подтвердите ваш Email</b>, после чего нажмите «Войти» снова.
+        </div>
+
+        <div class="auth-tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Вход</button>
+            <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Регистрация</button>
+        </div>
+
+        <!-- ФОРМА ВХОДА -->
+        <form id="login-form" class="auth-form active">
+            <div class="input-group"><input type="email" id="login-email" placeholder="Ваш Email" required></div>
+            <div class="input-group"><input type="password" id="login-password" placeholder="Пароль" required></div>
+            <button type="submit" class="btn btn--primary" style="width:100%; padding:14px;">Войти в аккаунт</button>
+        </form>
+
+        <!-- ФОРМА РЕГИСТРАЦИИ -->
+        <form id="register-form" class="auth-form">
+            <div class="input-group"><input type="email" id="reg-email" placeholder="Введите ваш Email" required></div>
+            <div class="input-group"><input type="password" id="reg-password" placeholder="Пароль (минимум 6 символов)" required></div>
+            <div class="input-group"><input type="password" id="reg-password-confirm" placeholder="Повторите пароль" required></div>
+            <button type="submit" class="btn btn--primary" style="width:100%; padding:14px;">Зарегистрироваться</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // ⚠️ ВСТАВЬТЕ СЮДА ВАШ ЛИЧНЫЙ КОНФИГ FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQXDvtgf5H94bbxHHOYsGKWOnMmfyvfUo",
+            authDomain: "cs2-fantasy-c902e.firebaseapp.com",
+            projectId: "cs2-fantasy-c902e",
+            storageBucket: "cs2-fantasy-c902e.firebasestorage.app",
+            messagingSenderId: "123408940742",
+            appId: "1:123408940742:web:4f2af61458c6d7f8a361c7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Переключение Вход / Регистрация
+        window.switchTab = function (mode) {
+            document.getElementById('verify-box').style.display = 'none';
+            if (mode === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('tab-register').classList.remove('active');
+                document.getElementById('login-form').classList.add('active');
+                document.getElementById('register-form').classList.remove('active');
+            } else {
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('tab-login').classList.remove('active');
+                document.getElementById('register-form').classList.add('active');
+                document.getElementById('login-form').classList.remove('active');
+            }
+        }
+
+        // ЛОГИКА ВХОДА
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const verifyBox = document.getElementById('verify-box');
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Проверяем, кликнул ли пользователь по ссылке в письме
+                if (!user.emailVerified) {
+                    verifyBox.style.display = 'block';
+                    verifyBox.innerHTML = `⚠️ Ваша почта не подтверждена! Мы отправили вам новое письмо. Проверьте входящие или спам.`;
+                    await sendEmailVerification(user); // Отправляем повторное письмо для удобства
+                    auth.signOut(); // Вылогиниваем, так как доступа быть не должно
+                    return;
+                }
+
+                // Если почта подтверждена, забираем токен и пускаем на сайт
+                const token = await user.getIdToken();
+                localStorage.setItem('token', token);
+                window.location.href = '/index.html';
+
+            } catch (error) {
+                alert("Ошибка авторизации: " + error.message);
+            }
+        });
+
+        // ЛОГИКА РЕГИСТРАЦИИ
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const passwordConfirm = document.getElementById('reg-password-confirm').value;
+            const verifyBox = document.getElementById('verify-box');
+
+            if (password !== passwordConfirm) {
+                alert("Пароли не совпадают!");
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 1. Отправляем письмо верификации от Google
+                await sendEmailVerification(user);
+
+                // 2. Оповещаем бэкенд о создании профиля в Firestore
+                const token = await user.getIdToken();
+                await fetch('/api/create-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                // Сразу вылогиниваем, пока не подтвердит почту
+                auth.signOut();
+
+                // Показываем плашку уведомления
+                switchTab('login');
+                verifyBox.style.display = 'block';
+                verifyBox.innerHTML = `📥 На адрес <b>${email}</b> отправлено письмо подтверждения. Перейдите по ссылке в письме, а затем войдите в аккаунт!`;
+
+            } catch (error) {
+                alert("Ошибка регистрации: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
