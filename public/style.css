@@ -486,6 +486,7 @@ body {
     width: 100%;
     text-transform: uppercase;
     font-size: 13px;
+    text-align: center;
 }
 /* Ãëàâíàÿ êíîïêà ñèìóëÿöèè */
 .btn--primary {
