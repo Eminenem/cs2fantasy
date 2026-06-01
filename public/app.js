@@ -4,7 +4,7 @@ const PLAYERS = [
     { id: 3, name: 'ZywOo', team: 'Vitality', role: 'Снайпер', rating: 1.37, img: 'img/zywoo.jpg', logo: 'img/logo/vitality.png' },
     { id: 4, name: 'flameZ', team: 'Vitality', role: 'Рифлер', rating: 1.18, img: 'img/flamez.jpg', logo: 'img/logo/vitality.png' },
     { id: 5, name: 'mezii', team: 'Vitality', role: 'Рифлер', rating: 1.05, img: 'img/mezii.jpg', logo: 'img/logo/vitality.png' },
-    { id: 6, name: 'Aleksib', team: 'Natus Vincere', role: 'Капитан', rating: 0.91, img: 'img/Aleksib.jpg', logo: 'img/logo/navi.png' },
+    { id: 6, name: 'Aleksib', team: 'Natus Vincere', role: 'Капитан', rating: 0.91, img: 'img/aleksib.jpg', logo: 'img/logo/navi.png' },
     { id: 7, name: 'iM', team: 'Natus Vincere', role: 'Рифлер', rating: 1.08, img: 'img/im.jpg', logo: 'img/logo/navi.png' },
     { id: 8, name: 'b1t', team: 'Natus Vincere', role: 'Рифлер', rating: 1.12, img: 'img/b1t.jpg', logo: 'img/logo/navi.png' },
     { id: 9, name: 'w0nderful', team: 'Natus Vincere', role: 'Снайпер', rating: 1.18, img: 'img/wonderful.jpg', logo: 'img/logo/navi.png' },
