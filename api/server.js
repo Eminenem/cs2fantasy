@@ -12,10 +12,26 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Инициализация Firebase Admin SDK
-const serviceAccount = require('../firebase-keys.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+let serviceAccount;
+
+try {
+    if (process.env.FIREBASE_KEYS_JSON) {
+        // Если мы в облаке Vercel, парсим текст из Environment Variables
+        serviceAccount = JSON.parse(process.env.FIREBASE_KEYS_JSON);
+    } else {
+        // Если мы тестируем локально на ПК, читаем файл из корня
+        serviceAccount = require('../firebase-keys.json');
+    }
+
+    // Инициализируем Firebase Admin, только если он еще не поднят
+    if (admin.apps.length === 0) {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+    }
+} catch (initError) {
+    console.error("Критическая ошибка инициализации Firebase Admin:", initError.message);
+}
 
 const db = admin.firestore();
 
