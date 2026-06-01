@@ -170,6 +170,11 @@
     </div>
 
     <script type="module">
+        const loader = document.getElementById('site-loader');
+      if (loader) {
+          loader.style.opacity = '0';
+          loader.style.visibility = 'hidden';
+      }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
