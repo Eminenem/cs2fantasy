@@ -124,7 +124,7 @@ function renderMarket() {
         const card = document.createElement('div');
         card.className = 'player-card';
         card.innerHTML = `
-            <img src="${player.img}" alt="${player.name}" class="player-card__bg-avatar" onerror="this.src='https://placehold.co{encodeURIComponent(player.name)}'">
+            <img src="${player.img}" alt="${player.name}" class="player-card__bg-avatar" onerror="this.src=\`https://placehold.co\${encodeURIComponent(player.name)}\`">
             <div class="player-card__badge">
                 <img src="${player.logo}" alt="${player.team}" class="player-card__bg-logo" onerror="this.style.display='none'">
                 <div class="player-card__name">${player.name}</div>
@@ -355,4 +355,3 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
