@@ -50,7 +50,7 @@ body {
         background-attachment: fixed;
     }
 
-    /* 🔥 НОВЫЙ БЛОК: Премиальный бежевый орнамент IEM Cologne strictly по бокам экрана */
+    /* 🔥 ИСПРАВЛЕНО: Более яркий и насыщенный бежевый орнамент IEM Cologne по бокам */
     body::after {
         content: "";
         position: fixed;
@@ -58,29 +58,26 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* Задний план, строго под контентом */
+        z-index: -1;
         pointer-events: none;
-        opacity: 0.45; /* Сбалансированная яркость узора */
-        /* Рисуем строгие вертикальные линии и угловатые шевроны ESL */
+        /* 🌟 СДЕЛАНО ЯРЧЕ: Подняли общую плотность отображения узора */
+        opacity: 0.85;
+        /* 🌟 СДЕЛАНО ЯРЧЕ: Увеличили плотность цвета в rgba для каждой линии */
         background-image:
-        /* 1. Тонкие направляющие вертикальные полосы */
-        linear-gradient(90deg, rgba(197, 181, 159, 0.4) 1px, transparent 1px),
-        /* 2. Повторяющиеся угловатые готические шевроны (стрелы вверх) */
-        linear-gradient(45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%), linear-gradient(-45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%),
-        /* 3. Горизонтальные технологичные штрихи-засечки */
-        linear-gradient(0deg, rgba(197, 181, 159, 0.3) 1px, transparent 1px);
-        background-size: 100% 100%, /* Линии на всю высоту */
-        40px 40px, /* Размер шевронов левых */
-        40px 40px, /* Размер шевронов правых */
-        100% 80px; /* Шаг горизонтальных засечек */
-
+        /* 1. Вертикальные направляющие оси */
+        linear-gradient(90deg, rgba(197, 181, 159, 0.8) 1.5px, transparent 1.5px),
+        /* 2. Угловые шевроны (стрелы вверх) */
+        linear-gradient(45deg, rgba(197, 181, 159, 0.4) 25%, transparent 25%), linear-gradient(-45deg, rgba(197, 181, 159, 0.4) 25%, transparent 25%),
+        /* 3. Горизонтальные штрихи-засечки */
+        linear-gradient(0deg, rgba(197, 181, 159, 0.7) 1.5px, transparent 1.5px);
+        background-size: 100% 100%, 40px 40px, 40px 40px, 100% 80px;
         background-position: 0 0, 0 0, 0 0, 0 0;
-        /* 🌟 ГЛАВНЫЙ СЕКРЕТ: Маска, которая полностью стирает узор в центре экрана (где сетка 1200px) 
-       и оставляет его видимым ТОЛЬКО на пустых полях справа и слева на ПК */
+        /* Трафаретное вырезание центра (оставляем только поля по бокам) */
         mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
         -webkit-mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
         background-attachment: fixed;
     }
+
 
 /* Отключаем орнамент на мобильных телефонах, чтобы он не забивал интерфейс */
 @media (max-width: 1200px) {
