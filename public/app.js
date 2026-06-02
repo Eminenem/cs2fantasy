@@ -178,9 +178,6 @@ function renderTeam() {
 
     if (teamCountEl) teamCountEl.textContent = currentTeamSize.toString();
 
-    if (calculateBtn && !state.isLocked) {
-        calculateBtn.disabled = (currentTeamSize !== 5 || state.starPlayerIndex === null);
-    }
 }
 window.buyPlayer = function (id) {
     if (state.isLocked) return;
