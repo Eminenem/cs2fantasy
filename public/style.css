@@ -615,7 +615,7 @@ body {
         box-sizing: border-box;
     }
         .slot{
-            width: calc(50%-6px) !important;
+            width: calc(50% - 6px) !important;
         }
 
         .player-card__badge {
