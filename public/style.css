@@ -681,6 +681,32 @@ body {
         max-width: calc(50% - 6px) !important;
         flex: 0 1 calc(50% - 6px) !important;
     }
+    /* Включаем отображение мобильной стрелочки */
+    #toggle-stats-btn {
+        display: flex !important;
+    }
+
+    /* Обертка для плавного изменения высоты и скрытия контента */
+    .stats-bar-wrapper {
+        width: 100%;
+        max-height: 500px; /* Запас высоты для развернутого состояния */
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.4s ease-in-out;
+        opacity: 1;
+    }
+
+        /* Класс, который JS будет вешать для мгновенного скрытия шапки */
+        .stats-bar-wrapper.collapsed {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            margin-top: -15px !important; /* Поджимаем отступы вверх */
+        }
+
+    /* Делаем саму шапку чуть компактнее по высоте на мобильных, чтобы освободить место */
+    .header {
+        padding: 10px 0 !important;
+        margin-bottom: 25px;
+    }
 }
 
 /* Ультра-маленькие экраны старых телефонов (до 380px) */
