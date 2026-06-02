@@ -300,7 +300,7 @@ function startDeadlineCountdown(deadlineString) {
         const diff = deadlineDate - now;
 
         if (diff <= 0) {
-            timerEl.textContent = "ТРАНСФЕРЫ ЗАКРЫТЫ 🛑";
+            timerEl.textContent = "Составы на игровой день закрыты";
             timerEl.style.color = "var(--color-danger)";
             timerEl.style.background = "rgba(255, 74, 74, 0.1)";
 
