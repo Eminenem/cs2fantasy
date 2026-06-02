@@ -1,29 +1,31 @@
 /* =========================================================================
-   1. ПЕРЕМЕННЫЕ, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
+   1. ПЕРЕМЕННЫЕ ESL BRANDING, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
    ========================================================================= */
 
 :root {
-    --color-bg: rgba(15, 15, 20, 1);
-    --color-surface: rgba(25, 25, 30, 1);
-    --color-primary: #de9b35; /* Фирменный оранжевый CS2 для акцентов */
-    --color-text: rgba(225, 225, 245, 1);
-    --color-text-muted: rgba(150, 150, 165, 1);
-    --color-danger: rgba(255, 74, 74, 1);
-    --color-success: rgba(76, 175, 80, 1);
+    --color-bg: #0b0c10; /* Ультра-темный матовый графит (база ESL) */
+    --color-surface: #14151f; /* Асфальтовый серый для блоков и плашек */
+    --color-surface-hover: #1c1d2a; /* Цвет плашек при наведении */
+    --color-primary: #ffff00; /* Фирменный неоново-желтый / лимонный ESL */
+    --color-text: #f3f4f6; /* Чистый холодный белый для читаемости */
+    --color-text-muted: #71717a; /* Благородный стальной серый для второстепенного текста */
+    --color-danger: #ff4a4a; /* Красный акцент */
+    --color-success: #00ff66; /* Кислотно-зеленый для подтвержденных статусов */
+    --border-global: rgba(255, 255, 0, 0.08); /* Тонкие фирменные неоновые границы */
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
 }
 
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.5;
-    overflow-x: hidden; /* Защита от горизонтального скролла из-за ленты */
+    overflow-x: hidden;
 }
 
 .container {
@@ -32,11 +34,13 @@ body {
     padding: 0 20px;
 }
 
-/* Шапка приложения */
+/* Строгая премиальная шапка ESL */
 .header {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid rgba(225, 225, 245, 0.15);
-    padding: 20px 0;
+    background-color: rgba(20, 21, 31, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 16px 0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -49,10 +53,12 @@ body {
 }
 
 .header__title {
-    font-size: 24px;
-    font-weight: 800;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    font-style: italic;
 }
 
     .header__title span {
@@ -61,22 +67,26 @@ body {
 
 .stats-bar {
     display: flex;
-    gap: 20px;
+    gap: 12px;
 }
 
 .stats-bar__item {
-    background: rgba(55, 55, 60, 1);
+    background: #1c1d2a;
+    border: 1px solid rgba(255, 255, 255, 0.03);
     padding: 10px 20px;
     border-radius: 6px;
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
     .stats-bar__item span {
         color: var(--color-primary);
+        margin-left: 5px;
     }
 
 /* Главный контент-блок */
@@ -85,12 +95,14 @@ body {
 }
 
 .section-title {
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-family: 'Impact', sans-serif;
+    font-style: italic;
+    font-size: 22px;
+    margin-bottom: 25px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     border-left: 4px solid var(--color-primary);
-    padding-left: 10px;
+    padding-left: 12px;
 }
 
 .fantasy-team {
@@ -98,57 +110,55 @@ body {
 }
 
 /* =========================================================================
-   2. СТИЛИ БЕГУЩЕЙ СТРОКИ РЕЙТИНГА КОМАНД (HLTV TICKER)
+   2. СТИЛИ БЕГУЩЕЙ СТРОКИ РЕЙТИНГА КОМАНД (ESL LICKER)
    ========================================================================= */
 
 .ticker-wrapper {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid rgba(225, 225, 245, 0.15);
-    height: 40px;
+    background-color: #14151f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    height: 38px;
     display: flex;
     overflow: hidden;
     position: relative;
 }
 
-/* Статичная плашка-заголовок слева */
 .ticker__title {
-    background: #000000;
-    color: var(--color-primary);
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 13px;
+    background: var(--color-primary);
+    color: #000000; /* Контрастный черный текст на желтом фоне */
+    font-family: 'Impact', sans-serif;
+    font-size: 12px;
     font-style: italic;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 18px;
     z-index: 10;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 8px 0 20px rgba(0, 0, 0, 0.7);
     white-space: nowrap;
+    text-transform: uppercase;
 }
 
-/* Контейнер движущейся ленты */
 .ticker {
     display: flex;
     align-items: center;
     white-space: nowrap;
     padding-left: 10px;
-    animation: tickerLoop 35s linear infinite; /* Бесконечный цикл сдвига */
+    animation: tickerLoop 40s linear infinite;
 }
 
-    /* Пауза бегущей строки при наведении мыши */
     .ticker:hover {
         animation-play-state: paused;
         cursor: pointer;
     }
 
-/* Элемент команды внутри ленты */
 .ranking-item {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 0 20px;
-    border-right: 1px solid rgba(225, 225, 245, 0.1);
+    padding: 0 22px;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
     font-size: 13px;
+    letter-spacing: 0.5px;
 }
 
 .ranking-item__place {
@@ -165,12 +175,11 @@ body {
 .ranking-item__points {
     color: var(--color-text-muted);
     font-size: 11px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1px 5px;
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
-/* Анимация бесконечного смещения ленты */
 @keyframes tickerLoop {
     0% {
         transform: translate3d(0, 0, 0);
@@ -180,9 +189,8 @@ body {
         transform: translate3d(-50%, 0, 0);
     }
 }
-
 /* =========================================================================
-   3. СЕТКА И АРХИТЕКТУРА РОЛЕВЫХ СЛОТОВ КОМАНДЫ
+   3. СЕТКА И АРХИТЕКТУРА РОЛЕВЫХ СЛОТОВ КОМАНДЫ (ESL STAGE)
    ========================================================================= */
 
 .team-slots {
@@ -195,28 +203,30 @@ body {
 
 .slot {
     background: var(--color-surface);
-    border: 2px dashed rgba(85, 85, 90, 1);
+    border: 1px dashed rgba(255, 255, 255, 0.08);
     border-radius: 8px;
-    /*min-height: 380px;*/
     position: relative;
-
     aspect-ratio: 3 / 5;
     height: auto;
     min-height: unset;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
     .slot::before {
         content: attr(data-role);
         position: absolute;
-        top: 10px;
-        left: 10px;
-        font-size: 11px;
+        top: 12px;
+        left: 12px;
+        font-size: 10px;
+        font-weight: 800;
         text-transform: uppercase;
-        background: rgba(0, 0, 0, 0.6);
-        padding: 2px 6px;
+        background: #000000;
+        padding: 3px 8px;
         border-radius: 4px;
-        color: var(--color-text-muted);
+        color: var(--color-primary); /* Фирменный маркер роли в стиле ESL */
         z-index: 5;
+        letter-spacing: 0.5px;
+        border: 1px solid rgba(255, 255, 0, 0.15);
     }
 
 .slot__empty {
@@ -225,40 +235,43 @@ body {
     justify-content: center;
     height: 100%;
     color: var(--color-text-muted);
-    font-size: 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
     text-align: center;
     padding: 20px;
     padding-top: 40px;
 }
 
 /* =========================================================================
-   4. ДИЗАЙН КАРТОЧЕК С ФОНОВЫМ ИГРОКОМ И ЛОГОТИПОМ-ВОДЯНЫМ ЗНАКОМ
+   4. ДИЗАЙН КАРТОЧЕК С ТЕКСТУРОЙ ESL И ВОДЯНЫМИ ЗНАКАМИ КЛУБОВ
    ========================================================================= */
 
 .player-card {
-    background: linear-gradient(135deg, rgba(45, 45, 50, 1) 0%, var(--color-surface) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* Холодный строгий градиент вместо CS-оранжевого */
+    background: linear-gradient(180deg, #1c1d2a 0%, #11121a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
-    /*height: 380px;*/
-
     aspect-ratio: 3 / 5;
     height: auto;
     min-height: unset;
-
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
     .player-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        border-color: rgba(225, 225, 245, 0.3);
+        transform: translateY(-6px);
+        border-color: rgba(255, 255, 0, 0.25); /* Желтый ESL-отсвет при наведении */
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 0, 0.05);
     }
 
-/* Фото игрока на весь задний фон */
+/* Фото игрока на весь задний фон с мягким спортивным затемнением */
 .player-card__bg-avatar {
     position: absolute;
     top: 0;
@@ -268,63 +281,63 @@ body {
     object-fit: cover;
     object-position: top center;
     z-index: 1;
-    background: linear-gradient(to top, rgba(15, 15, 20, 0.95) 20%, rgba(15, 15, 20, 0) 60%);
+    background: linear-gradient(to top, #0b0c10 25%, rgba(11, 12, 16, 0) 65%);
 }
 
-/* Скошенная непрямоугольная информационная плашка */
+/* Геометрическая информационная плашка в строгом стиле ESL */
 .player-card__badge {
     position: relative;
     z-index: 2;
-    padding: 15px;
-    padding-top: 25px;
+    padding: 16px;
+    padding-top: 22px;
     width: 100%;
 }
 
     .player-card__badge::before {
         content: "";
         position: absolute;
-        top: -5px; /* Смещение, чтобы компенсировать наклон */
-        left: 0px;
+        top: -4px;
+        left: 0;
         right: 0;
         bottom: 0;
         z-index: -1;
-        background: rgba(25, 25, 30, 0.95);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        /* Наклоняем верхнюю грань */
-        transform: skewY(-6deg);
+        background: rgba(20, 21, 31, 0.96);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        transform: skewY(-4deg); /* Чуть более строгий и сдержанный наклон */
         transform-origin: top right;
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-/* Огромный фоновый логотип-водяной знак внутри плашки */
+/* Стильный фоновый логотип команды (аккуратный водяной знак) */
 .player-card__bg-logo {
     position: absolute;
-    bottom: -15px;
-    right: -15px;
-    width: 150px;
-    height: 150px;
+    bottom: -10px;
+    right: -10px;
+    width: 130px;
+    height: 130px;
     object-fit: contain;
-    z-index: -1; /* Спрятан за текстом и кнопками */
-    /* Спокойное состояние: монохромный водяной знак */
-    filter: grayscale(1) brightness(0.8);
-    opacity: 0.32;
-    transform: rotate(-10deg);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+    filter: grayscale(1) brightness(0.6);
+    opacity: 0.15;
+    transform: rotate(-5deg);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Эффект при наведении: логотип наливается цветом организации и выезжает */
+/* Эффект при наведении: логотип ESL-карты наливается цветом */
 .player-card:hover .player-card__bg-logo {
-    opacity: 0.65;
-    filter: grayscale(0) brightness(1);
-    transform: rotate(0deg) scale(1.15) translate(-5px, -5px);
+    opacity: 0.35;
+    filter: grayscale(0) brightness(0.9);
+    transform: rotate(0deg) scale(1.1);
 }
 
 .player-card__name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 2px;
+    color: var(--color-text);
 }
 
 .player-card__team {
@@ -334,42 +347,42 @@ body {
     margin-bottom: 12px;
     display: flex;
     align-items: center;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-/* Скошенный тег роли игрока */
+/* Минималистичный тег роли игрока */
 .player-card__role-tag {
-    background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text);
     font-size: 10px;
     padding: 2px 8px;
-    border-radius: 4px;
+    border-radius: 3px;
     margin-left: auto;
     font-weight: 700;
-    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
-
-/* МАССИВНЫЙ ХРОМИРОВАННЫЙ RATING 3.0 С КУРСИВОМ ВНУТРИ ПЛАШКИ */
+/* МАССИВНЫЙ ПЛАТИНОВЫЙ RATING 3.0 С КУРСИВОМ ВНУТРИ ПЛАШКИ */
 .player-card__badge-rating {
     display: flex;
     align-items: flex-end;
-    background: rgba(0, 0, 0, 0.35);
-    padding: 8px 0px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 0px;
     margin-bottom: 12px;
     font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-style: italic;
     font-weight: 900;
     letter-spacing: 1px;
-    /* Наложение сложного хромированного градиента на шрифт */
-    background: linear-gradient(135deg, #ffffff 0%, #b5bdc8 30%, #828c95 50%, #ffffff 70%, #757f9a 100%);
+    /* Стильный стальной хромированный градиент ESL */
+    background: linear-gradient(135deg, #ffffff 0%, #cfd6df 40%, #a1aab3 60%, #ffffff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.6));
 }
 
     .player-card__badge-rating span {
-        font-size: 26px; /* Крупное число рейтинга */
+        font-size: 24px;
         line-height: 0.9;
         font-weight: 900;
         letter-spacing: -1px;
@@ -378,101 +391,87 @@ body {
     }
 
 /* =========================================================================
-   5. ВИЗУАЛЬНОЕ СВЕЧЕНИЕ И ЗОЛОТЫЕ СТИЛИ ДЛЯ ЗВЕЗДНОГО ИГРОКА
+   5. ЧЕМПИОНСКИЙ ЗОЛОТОЙ СТИЛЬ ДЛЯ ЗВЕЗДНОГО ИГРОКА (ESL MVP)
    ========================================================================= */
 
 .player-card--star {
-    border: 2px solid var(--color-primary) !important;
-    box-shadow: 0 0 25px rgba(222, 155, 53, 0.65);
+    border: 1px solid var(--color-primary) !important;
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.2) !important;
 }
 
-    /* Изменение плашки Звездного игрока на золото */
+    /* Наливаем плашку Звездного игрока глубоким матовым золотом */
     .player-card--star .player-card__badge::before {
-    background: linear-gradient(135deg, rgba(255, 195, 153, 0.65) 0%, rgba(222, 155, 73, 0.6) 100%);
-}
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%) !important;
+    }
 
-.player-card--star .player-card__name {
-    color: rgba(0, 0, 0, 0.9);
-}
+    .player-card--star .player-card__name {
+        color: #000000 !important;
+        font-weight: 900;
+    }
 
     .player-card--star .player-card__team {
-        color: rgba(0, 0, 0, 0.7);
+        color: rgba(0, 0, 0, 0.6) !important;
+        font-weight: 700;
     }
 
     .player-card--star .player-card__role-tag {
-        background: rgba(0, 0, 0, 0.85);
-        color: #fff;
+        background: #000000 !important;
+        color: var(--color-primary) !important;
+        border: 1px solid rgba(255, 255, 0, 0.3) !important;
     }
 
-    /* Матовый графитовый металл для рейтинга на золотой карте */
+    /* Темное золото для рейтинга на MVP карте */
     .player-card--star .player-card__badge-rating {
-        background: rgba(0, 0, 0, 0.08);
-        border-left-color: rgba(0, 0, 0, 0.8);
-        background: linear-gradient(135deg, #333333 0%, #000000 50%, #222222 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    /* Кастомизация фонового логотипа-водяного знака на золотой карте */
-    .player-card--star .player-card__bg-logo {
-        filter: grayscale(1) brightness(0);
-        opacity: 0.08;
+        background: linear-gradient(135deg, #111 0%, #333 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
     }
 
-    .player-card--star:hover .player-card__bg-logo {
-        filter: grayscale(0.2) brightness(0.9);
-        opacity: 0.3;
+    .player-card--star .player-card__bg-logo {
+        filter: grayscale(1) brightness(0) !important;
+        opacity: 0.06 !important;
     }
+
 /* Селектор Звезды (радио-кнопка) */
 .star-toggle-container {
     margin-bottom: 12px;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.4);
     padding: 6px;
     border-radius: 4px;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .player-card--star .star-toggle-container {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 .star-label {
-    font-size: 12px;
-    color: var(--color-text);
+    font-size: 11px;
+    color: var(--color-text-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .player-card--star .star-label {
-    color: rgba(0, 0, 0, 0.9);
-    font-weight: 700;
+    color: #000000 !important;
 }
 
 .star-label input {
     cursor: pointer;
     accent-color: var(--color-primary);
 }
-/* Скошенный зеленый тег бонуса за роль */
-.bonus-tag {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: var(--color-success);
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 10px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 4px;
-    z-index: 10;
-    text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
-}
+
 /* =========================================================================
-6. РЫНОЧНАЯ СЕТКА И КНОПКИ УПРАВЛЕНИЯ ТРАНСФЕРАМИ
-========================================================================= */
+   6. РЫНОЧНАЯ СЕТКА И СТРОГИЕ КНОПКИ ТРАНСФЕРОВ
+   ========================================================================= */
+
 .market-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -480,81 +479,79 @@ body {
 }
 
 .btn {
-    padding: 10px 20px;
+    padding: 11px 20px;
     border: none;
-    border-radius: 6px;
-    font-weight: 600;
+    border-radius: 4px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
     width: 100%;
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
     text-align: center;
+    letter-spacing: 0.5px;
 }
-/* Главная кнопка симуляции */
+
 .btn--primary {
     background-color: var(--color-surface);
     color: var(--color-text);
-    font-weight: 700;
     width: auto;
     display: block;
     margin: 0 auto;
-    padding: 15px 40px;
-    border: 1px solid rgba(225, 225, 245, 0.2);
+    padding: 14px 45px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
     .btn--primary:hover:not(:disabled) {
-        background-color: rgba(55, 55, 60, 1);
+        background-color: #1c1d2a;
+        border-color: var(--color-primary);
     }
 
-    .btn--primary:disabled {
-        background-color: var(--color-text-muted);
-        cursor: not-allowed;
-        opacity: 0.5;
-    }
 /* Кнопка покупки на рынке */
 .btn--buy {
-    background-color: rgba(0, 0, 0, 0.25);
-    color: var(--color-text);
-    border: 1px solid rgba(225, 225, 245, 0.65);
+    background-color: rgba(255, 255, 0, 0.04);
+    color: var(--color-primary);
+    border: 1px solid rgba(255, 255, 0, 0.2);
     margin-top: auto;
 }
 
     .btn--buy:hover:not(:disabled) {
-        background-color: var(--color-text);
-        color: rgba(0, 0, 0, 0.85);
-        border: 1px solid rgba(0, 0, 0, 0.25);
+        background-color: var(--color-primary);
+        color: #000000;
+        border-color: var(--color-primary);
     }
 
     .btn--buy:disabled {
-        opacity: 0.4;
+        opacity: 0.25;
         cursor: not-allowed;
-        border-color: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.02);
         color: var(--color-text-muted);
+        background: transparent;
     }
+
 /* Кнопка удаления */
 .btn--remove {
-    background-color: rgba(255, 74, 74, 0.1);
+    background-color: rgba(255, 74, 74, 0.03);
     color: var(--color-danger);
-    border: 1px solid rgba(255, 74, 74, 0.3);
+    border: 1px solid rgba(255, 74, 74, 0.15);
 }
+
+    .btn--remove:hover {
+        background-color: var(--color-danger);
+        color: #fff;
+        border-color: var(--color-danger);
+    }
 
 .player-card--star .btn--remove {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border-color: #000;
-}
-
-.btn--remove:hover {
-    background-color: var(--color-danger);
-    color: white;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    color: #fff !important;
+    border-color: #000 !important;
 }
 
 /* =========================================================================
-   ЖЕЛЕЗНАЯ МОБИЛЬНАЯ АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ
+   7. МОБИЛЬНАЯ АДАПТИВНОСТЬ (FLEX REWIND)
    ========================================================================= */
 
-/* Планшеты и большие экраны телефонов */
 @media (max-width: 992px) {
     .team-slots, .market-grid {
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -562,7 +559,6 @@ body {
     }
 }
 
-/* Смартфоны (Экран как у iPhone/Android) */
 @media (max-width: 768px) {
     .container {
         padding: 0 12px;
@@ -574,54 +570,60 @@ body {
 
     .header__container {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
         text-align: center;
     }
 
     .stats-bar {
         width: 100%;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
     }
 
     .stats-bar__item {
         width: 100%;
         text-align: center;
-        font-size: 14px;
+        font-size: 13px;
         padding: 8px 15px;
     }
 
-    /* 🔥 Перестраиваем слоты команды: на телефонах они идут по 2 в ряд */
-    .team-slots {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-        transform: none !important;
+    /* Мобильный флексбокс с точным центрированием */
+    .team-slots, .market-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+        justify-content: center !important;
     }
 
-    /* 🔥 Рынок игроков: тоже по 2 карточки в ряд, чтобы не растягивать экран */
-    .market-grid {
-        gap: 12px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-        flex: 0 1 calc(50% - 6px) !important;
-    }
-
-    /* Ужимаем пропорции карточек для мобильных экранов */
-    .player-card, .slot {
-        aspect-ratio: auto;
-        height: 290px;
-        min-height: 290px;
-        box-sizing: border-box;
-    }
-
-        .player-card__badge {
-            padding: 10px;
-            padding-top: 15px;
+        /* Одинокая карточка в последнем ряду встанет ровно по центру */
+        .team-slots .slot,
+        .market-grid .player-card {
+            aspect-ratio: auto !important;
+            height: 290px !important;
+            min-height: 290px !important;
+            box-sizing: border-box !important;
+            width: calc(50% - 6px) !important;
+            max-width: calc(50% - 6px) !important;
+            flex: 0 1 calc(50% - 6px) !important;
         }
+
+            .team-slots .slot .player-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 100% !important;
+                min-height: 100% !important;
+            }
+
+            /* Скрываем рамку занятого слота */
+            .team-slots .slot:has(.player-card) {
+                border: none !important;
+                background: transparent !important;
+            }
+
+    .player-card__badge {
+        padding: 12px;
+        padding-top: 18px;
+    }
 
     .player-card__name {
         font-size: 15px;
@@ -635,7 +637,7 @@ body {
     .player-card__badge-rating {
         font-size: 11px;
         padding: 4px 0;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
         .player-card__badge-rating span {
@@ -644,11 +646,11 @@ body {
 
     .star-toggle-container {
         padding: 4px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .star-label {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .btn {
@@ -656,12 +658,31 @@ body {
         font-size: 11px;
     }
 
-    .btn--primary {
-        width: 100%;
-        padding: 12px;
+    /* Мобильная стрелочка */
+    #toggle-stats-btn {
+        display: flex !important;
     }
 
-    /* Адаптируем бегущую строку */
+    /* Обертка сворачивания шапки */
+    .stats-bar-wrapper {
+        width: 100%;
+        max-height: 500px;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.4s ease-in-out;
+        opacity: 1;
+    }
+
+        .stats-bar-wrapper.collapsed {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            margin-top: -10px !important;
+        }
+
+    .header {
+        padding: 10px 0 !important;
+        margin-bottom: 20px;
+    }
+
     .ticker-wrapper {
         height: 34px;
     }
@@ -675,50 +696,19 @@ body {
         padding: 0 10px;
         font-size: 11px;
     }
-    .team-slots .slot,
-    .market-grid .player-card {
-        width: calc(50% - 6px) !important;
-        max-width: calc(50% - 6px) !important;
-        flex: 0 1 calc(50% - 6px) !important;
-    }
-    /* Включаем отображение мобильной стрелочки */
-    #toggle-stats-btn {
-        display: flex !important;
-    }
-
-    /* Обертка для плавного изменения высоты и скрытия контента */
-    .stats-bar-wrapper {
-        width: 100%;
-        max-height: 500px; /* Запас высоты для развернутого состояния */
-        overflow: hidden;
-        transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.4s ease-in-out;
-        opacity: 1;
-    }
-
-        /* Класс, который JS будет вешать для мгновенного скрытия шапки */
-        .stats-bar-wrapper.collapsed {
-            max-height: 0 !important;
-            opacity: 0 !important;
-            margin-top: -15px !important; /* Поджимаем отступы вверх */
-        }
-
-    /* Делаем саму шапку чуть компактнее по высоте на мобильных, чтобы освободить место */
-    .header {
-        padding: 10px 0 !important;
-        margin-bottom: 25px;
-    }
 }
 
-/* Ультра-маленькие экраны старых телефонов (до 380px) */
 @media (max-width: 380px) {
-    /* Если экран совсем крошечный, выстраиваем карточки строго по одной в ряд */
     .team-slots, .market-grid {
         grid-template-columns: 1fr;
     }
 
     .player-card, .slot {
-        height: 320px;
-        max-width: 260px;
+        height: 310px;
+        max-width: 250px;
         margin: 0 auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 1 100% !important;
     }
 }
