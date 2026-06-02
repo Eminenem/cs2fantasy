@@ -614,11 +614,14 @@ body {
         min-height: 290px;
         box-sizing: border-box;
     }
+        .slot{
+            width: calc(50%-6px)!important;
+        }
 
-    .player-card__badge {
-        padding: 10px;
-        padding-top: 15px;
-    }
+        .player-card__badge {
+            padding: 10px;
+            padding-top: 15px;
+        }
 
     .player-card__name {
         font-size: 15px;
