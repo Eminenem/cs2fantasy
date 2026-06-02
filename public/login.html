@@ -113,15 +113,14 @@
     </style>
 </head>
 <body>
-    <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f14; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s;">
-        <div style="font-family: 'Impact', sans-serif; font-style: italic; font-size: 36px; color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;">
-            CS2 <span style="color: #de9b35;">Fantasy</span>
+    <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s;">
+        <div style="font-family: 'Oswald', 'Arial Black', sans-serif; font-weight: 800; font-size: 32px; color: #fff; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase;">
+            CS2 <span style="color: #ffff00;">FANTASY</span>
         </div>
-        <!-- Анимированная линия загрузки в стиле киберспортивных трансляций -->
-        <div style="width: 200px; height: 3px; background: rgba(255,255,245,0.05); border-radius: 2px; overflow: hidden; position: relative;">
-            <div style="width: 80px; height: 100%; background: #de9b35; position: absolute; border-radius: 2px; animation: loadingBar 1.5s ease-in-out infinite;"></div>
+        <div style="width: 220px; height: 2px; background: rgba(255,255,255,0.03); border-radius: 1px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.01);">
+            <div style="width: 70px; height: 100%; background: #ffff00; position: absolute; border-radius: 1px; animation: loadingBar 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);"></div>
         </div>
-        <p style="color: rgba(150,150,165,1); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; font-weight: bold;">Подключение к серверам лиги...</p>
+        <p style="color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 18px; font-weight: 700; font-family: sans-serif;">Connecting to tournament servers...</p>
     </div>
 
     <style>
@@ -171,10 +170,10 @@
 
     <script type="module">
         const loader = document.getElementById('site-loader');
-      if (loader) {
-          loader.style.opacity = '0';
-          loader.style.visibility = 'hidden';
-      }
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+        }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
