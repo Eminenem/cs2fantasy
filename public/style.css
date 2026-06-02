@@ -674,10 +674,6 @@ body {
     }
     .team-slots .slot,
     .market-grid .player-card {
-        aspect-ratio: auto !important;
-        height: 290px !important;
-        min-height: 290px !important;
-        box-sizing: border-box !important;
         width: calc(50% - 6px) !important;
         max-width: calc(50% - 6px) !important;
         flex: 0 1 calc(50% - 6px) !important;
