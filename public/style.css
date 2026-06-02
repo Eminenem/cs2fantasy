@@ -27,51 +27,40 @@
    1. ПРЕМЬЕРНЫЙ ФОН: ИСКАЖЕННАЯ ГЕКСАГОНАЛЬНАЯ СЕТКА (OFFICIAL IEM COLOGNE)
    ========================================================================= */
 
-body {
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
-    line-height: 1.5;
-    overflow-x: hidden;
-    position: relative;
-    /* СВЕТОВЫЕ ЛУЧИ: Сделаны ярче и насыщеннее по углам инфографики */
-    background-image: radial-gradient(circle at 10% 15%, rgba(197, 181, 159, 0.16) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(126, 132, 148, 0.12) 0%, transparent 50%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
-    background-attachment: fixed;
+/* 🔥 ИСПРАВЛЕНО: Честная гексагональная сетка (соты) методом перекрытия треугольников */
+body::before {
+    content: "";
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    z-index: -1;
+    pointer-events: none;
+    /* СВЕТЛЫЙ ЯРКИЙ ЦВЕТ ЛИНИЙ */
+    opacity: 0.45;
+    /* 🌟 Формула честных гексов: Шахматное перекрытие треугольных масок */
+    background-image:
+    /* Слой 1: Вершины и основания первой половины гексагонов */
+    linear-gradient(60deg, #c5b59f 25%, transparent 25.5%), linear-gradient(120deg, #c5b59f 25%, transparent 25.5%), linear-gradient(60deg, transparent 75%, #c5b59f 75.5%), linear-gradient(120deg, transparent 75%, #c5b59f 75.5%),
+    /* Слой 2: Смещенная на половину шага вторая половина гексагонов */
+    linear-gradient(60deg, #7e8494 25%, transparent 25.5%), linear-gradient(120deg, #7e8494 25%, transparent 25.5%), linear-gradient(60deg, transparent 75%, #7e8494 75.5%), linear-gradient(120deg, transparent 75%, #7e8494 75.5%);
+    /* 📐 Точные тригонометрические размеры для сотовых пропорций */
+    background-size: 80px 140px;
+    /* Физическое шахматное смещение слоев, замыкающее линии в шестиугольники */
+    background-position: 0 0, 0 0, 0 0, 0 0, 40px 70px, 40px 70px, 40px 70px, 40px 70px; /* Сдвиг по X на 40px и по Y на 70px */
+    /* 🔥 ЭФФЕКТ ПРЕЛОМЛЕНИЯ И ИСКАЖЕНИЯ (Кривим и закручиваем гексы в 3D) */
+    transform: perspective(900px) /* Глубина пространства */
+    rotateX(22deg) /* Мощный наклон плоскости соты назад */
+    rotateY(-8deg) /* Искривление влево по оси инфографики */
+    skewX(-5deg) /* Динамический излом геометрии */
+    scale(1.2); /* Компенсация искажений */
+    transform-origin: center center;
+    /* Мягкое растворение узора к краям экрана */
+    mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+    -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
 }
 
-    /* 🔥 ИСПРАВЛЕНО: Математически точный, честный гексагональный узор (соты) */
-    body::before {
-        content: "";
-        position: fixed;
-        top: -20%;
-        left: -20%;
-        width: 140%;
-        height: 140%;
-        z-index: -1;
-        pointer-events: none;
-        opacity: 0.35; /* Яркая и четкая видимость граней */
-        /* Формула чистых гексов: комбинация угловых и прямых масок со смещением слоев */
-        background-image:
-        /* Вертикальные грани гексов со скачущей толщиной */
-        linear-gradient(90deg, rgba(197, 181, 159, 0.4) 0px, transparent 2px),
-        /* Скошенные грани под углом 60 градусов */
-        linear-gradient(60deg, transparent 48%, rgba(197, 181, 159, 0.5) 50%, transparent 52%), linear-gradient(-60deg, transparent 48%, rgba(126, 132, 148, 0.3) 50%, transparent 52%),
-        /* Дублирующие слои со смещением для замыкания шестиугольников */
-        linear-gradient(60deg, transparent 48%, rgba(197, 181, 159, 0.4) 50%, transparent 52%), linear-gradient(-60deg, transparent 48%, rgba(126, 132, 148, 0.25) 50%, transparent 52%);
-        /* Задаем строгий шаг сетки и сдвигаем слои относительно друг друга */
-        background-size: 100px 173.2px; /* 173.2px — это точный корень из 3 для идеальных пропорций сот */
-        background-position: 0 0, 0 0, 0 0, 50px 86.6px, 50px 86.6px; /* Физический сдвиг на половину ячейки, который и превращает ромбы в соты! */
-        /* 🔥 ЭФФЕКТ ПРЕЛОМЛЕНИЯ: Принудительно кривим и закручиваем гексы в 3D */
-        transform: perspective(1000px) /* Эффект перспективы и объема */
-        rotateX(18deg) /* Сильный наклон плоскости назад */
-        rotateY(-6deg) /* Искривление влево по оси инфографики */
-        skewX(-4deg) /* Дополнительный динамический сдвиг граней */
-        scale(1.15);
-        transform-origin: center center;
-        /* Мягкое растворение узора по краям экрана */
-        mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-    }
 
 
 
