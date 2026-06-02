@@ -638,16 +638,6 @@ body {
         }
 }
 
-/* Экраны очень маленьких телефонов */
-@media (max-width: 380px) {
-    .team-slots .slot, .market-grid .player-card {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-        aspect-ratio: 3 / 5 !important;
-    }
-}
-
 
 /* =========================================================================
    👑 ИСПРАВЛЕНО: ПОЛНАЯ СТИЛИЗАЦИЯ АДМИНКИ ПОД ОФИЦИАЛЬНУЮ ИНФОГРАФИКУ IEM
