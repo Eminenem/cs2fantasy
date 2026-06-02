@@ -1,21 +1,19 @@
 /* =========================================================================
-   1. ПЕРЕМЕННЫЕ ESL BRANDING, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
+   1. ПЕРЕМЕННЫЕ OFFICIAL IEM COLOGNE 2026 LIGHT THEME & СЕТКА
    ========================================================================= */
 
 @import url('https://googleapis.com');
 
 :root {
-    --color-bg: #07080d; /* Ультра-глубокий полуночный графит */
-    --color-surface: rgba(20, 21, 31, 0.75); /* Полупрозрачное стекло для плашек */
-    --color-surface-hover: rgba(28, 29, 42, 0.85);
-    --color-primary: #ffff00; /* Фирменный кислотно-желтый ESL */
-    --color-text: #f3f4f6;
-    --color-text-muted: #64748b;
-    --color-danger: #ff4a4a;
-    --color-success: #00ff66;
-    /* 🔥 КРИСТАЛЛИЧЕСКИЕ ЦВЕТА COLOGNE MAJOR */
-    --color-crystal-blue: #0055ff; /* Насыщенный синий кристалл */
-    --color-crystal-cyan: #00d2ff; /* Неоновый голубой лед */
+    --color-bg: #f7f8fa; /* Официальный жемчужно-белый матовый фон */
+    --color-surface: #ffffff; /* Чистый белый цвет для контент-плашек */
+    --color-surface-dark: #121318; /* Угольно-черный для контрастных элементов и шапки */
+    --color-primary: #de9b35; /* Благородное золото IEM Cologne для акцентов */
+    --color-text: #121318; /* Глубокий черный текст для идеальной читаемости */
+    --color-text-light: #ffffff; /* Белый текст для контрастных блоков */
+    --color-text-muted: #7e8494; /* Сдержанный стальной серый для второстепенных меток */
+    --color-danger: #ff3b30;
+    --color-success: #34c759;
 }
 
 * {
@@ -31,18 +29,12 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     position: relative;
-    /* 🔥 КИНЕМАТОГРАФИЧНЫЙ ФОН: Глубокие сине-голубые кристаллы и подсветка собора */
-    background-image:
-    /* 1. Левое верхнее неоново-голубое свечение кристалла */
-    radial-gradient(circle at 10% 15%, rgba(0, 210, 255, 0.07) 0%, transparent 40%),
-    /* 2. Правое нижнее синее свечение сцены */
-    radial-gradient(circle at 90% 85%, rgba(0, 85, 255, 0.08) 0%, transparent 45%),
-    /* 3. Центральный витражный столб света */
-    linear-gradient(135deg, rgba(7, 8, 13, 1) 0%, rgba(12, 16, 28, 1) 50%, rgba(7, 8, 13, 1) 100%);
+    /* 🔥 ОФИЦИАЛЬНЫЙ ФОН: Мягкие золотисто-серые кристаллы на жемчужной подложке */
+    background-image: radial-gradient(circle at 15% 20%, rgba(222, 155, 53, 0.03) 0%, transparent 35%), radial-gradient(circle at 85% 80%, rgba(126, 132, 148, 0.04) 0%, transparent 40%), linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
     background-attachment: fixed;
 }
 
-    /* 🔥 ДЕКОРАТИВНАЯ ГЕОМЕТРИЧЕСКАЯ МАСКА ВИТРАЖА НА ЗАДНИЙ ПЛАН */
+    /* 🔥 СВЕТЛАЯ КРИСТАЛЛИЧЕСКАЯ СЕТКА С ИНФОГРАФИКИ НА ЗАДНИЙ ПЛАН */
     body::before {
         content: "";
         position: fixed;
@@ -50,30 +42,23 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* Прячем строго за контент */
-        opacity: 0.12; /* Тонкая, не отвлекающая текстура */
+        z-index: -1;
+        opacity: 0.25; /* Очень тонкие, изящные линии */
         pointer-events: none;
-        /* Рисуем тонкие пересекающиеся грани готического витража / кристалла */
-        background-image: linear-gradient(30deg, transparent 49%, var(--color-crystal-cyan) 50%, transparent 51%), linear-gradient(-30deg, transparent 49%, var(--color-crystal-blue) 50%, transparent 51%), linear-gradient(90deg, transparent 49%, rgba(0, 210, 255, 0.3) 50%, transparent 51%);
-        background-size: 120px 208px; /* Геометрическая ячеистая структура */
+        /* Тончайшие геометрические грани кристаллов Кёльна */
+        background-image: linear-gradient(30deg, transparent 49.5%, rgba(222, 155, 53, 0.2) 50%, transparent 50.5%), linear-gradient(-30deg, transparent 49.5%, rgba(126, 132, 148, 0.15) 50%, transparent 50.5%);
+        background-size: 160px 276px;
     }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Строгая премиальная шапка ESL */
+/* Строгая, ультра-контрастная премиальная шапка */
 .header {
-    background-color: rgba(20, 21, 31, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    padding: 16px 0;
+    background-color: var(--color-surface-dark); /* Шапка темная для мощного контраста */
+    border-bottom: 2px solid var(--color-primary); /* Золотой разделитель */
+    padding: 14px 0;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
 .header__container {
@@ -83,12 +68,12 @@ body {
 }
 
 .header__title {
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: 22px;
-    font-weight: 900;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-style: italic;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
 }
 
     .header__title span {
@@ -97,70 +82,77 @@ body {
 
 .stats-bar {
     display: flex;
-    gap: 12px;
+    gap: 10px;
 }
 
+/* Белые матовые плашки на темной шапке */
 .stats-bar__item {
-    background: rgba(28, 29, 42, 0.5) !important; /* Полупрозрачный фон */
-    border: 1px solid rgba(255, 255, 255, 0.04) !important;
-    backdrop-filter: blur(8px); /* Размытие кристаллического фона под плашкой */
-    -webkit-backdrop-filter: blur(8px);
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--color-text-light);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
     .stats-bar__item span {
         color: var(--color-primary);
-        margin-left: 5px;
+        margin-left: 4px;
     }
 
 /* Главный контент-блок */
 .main {
-    padding: 40px 0;
+    padding: 35px 0;
 }
 
+/* Заголовки как на графике — строгие, с золотым маркером */
 .section-title {
-    font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
-    font-style: italic;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 800;
     font-size: 22px;
     margin-bottom: 25px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    color: var(--color-surface-dark);
     border-left: 4px solid var(--color-primary);
     padding-left: 12px;
 }
 
 .fantasy-team {
-    margin-bottom: 50px;
+    margin-bottom: 45px;
 }
 
 /* =========================================================================
-   2. СТИЛИ БЕГУЩЕЙ СТРОКИ РЕЙТИНГА КОМАНД (ESL LICKER)
+   2. СТИЛИ БЕГУЩЕЙ СТРОКИ РЕЙТИНГА КОМАНД (IEM TICKER)
    ========================================================================= */
 
 .ticker-wrapper {
-    background-color: #14151f;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    height: 38px;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    height: 36px;
     display: flex;
     overflow: hidden;
     position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
+/* Контрастная черная плашка заголовка слева */
 .ticker__title {
-    background: var(--color-primary);
-    color: #000000; /* Контрастный черный текст на желтом фоне */
-    font-family: 'Oswald', 'Arial Black', sans-serif;
+    background: var(--color-surface-dark);
+    color: var(--color-primary);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
     font-size: 11px;
-    font-style: italic;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
-    padding: 0 18px;
+    padding: 0 16px;
     z-index: 10;
-    box-shadow: 8px 0 20px rgba(0, 0, 0, 0.7);
+    box-shadow: 6px 0 15px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
     text-transform: uppercase;
 }
@@ -170,7 +162,7 @@ body {
     align-items: center;
     white-space: nowrap;
     padding-left: 10px;
-    animation: tickerLoop 40s linear infinite;
+    animation: tickerLoop 42s linear infinite;
 }
 
     .ticker:hover {
@@ -182,29 +174,27 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 0 22px;
-    border-right: 1px solid rgba(255, 255, 255, 0.03);
-    font-size: 13px;
-    letter-spacing: 0.5px;
+    padding: 0 20px;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .ranking-item__place {
-    font-family: 'Impact', sans-serif;
+    font-family: 'Oswald', sans-serif;
     color: var(--color-primary);
-    font-style: italic;
 }
 
 .ranking-item__name {
-    font-weight: 700;
     color: var(--color-text);
 }
 
 .ranking-item__points {
     color: var(--color-text-muted);
-    font-size: 11px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 1px 5px;
+    border-radius: 3px;
 }
 
 @keyframes tickerLoop {
@@ -217,7 +207,7 @@ body {
     }
 }
 /* =========================================================================
-   3. СЕТКА И АРХИТЕКТУРА РОЛЕВЫХ СЛОТОВ КОМАНДЫ (ESL STAGE)
+   3. СЕТКА И АРХИТЕКТУРА РОЛЕВЫХ СЛОТОВ КОМАНДЫ (LIGHT LUXURY)
    ========================================================================= */
 
 .team-slots {
@@ -228,12 +218,16 @@ body {
     justify-content: center;
 }
 
+/* Пустые слоты на светлом фоне имеют деликатную серую обводку */
 .slot {
-    background: rgba(20, 21, 31, 0.4) !important;
-    border: 1px dashed rgba(0, 212, 255, 0.15) !important; /* Голубой неоновый пунктир слота */
+    background: #ffffff;
+    border: 2px dashed rgba(18, 19, 24, 0.12);
     border-radius: 8px;
     position: relative;
     aspect-ratio: 3 / 5;
+    height: auto;
+    min-height: unset;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
     .slot::before {
@@ -244,13 +238,13 @@ body {
         font-size: 10px;
         font-weight: 800;
         text-transform: uppercase;
-        background: #000000;
+        background: var(--color-surface-dark);
         padding: 3px 8px;
         border-radius: 4px;
-        color: var(--color-primary); /* Фирменный маркер роли в стиле ESL */
+        color: var(--color-primary); /* Контрастный золотой маркер роли */
         z-index: 5;
         letter-spacing: 0.5px;
-        border: 1px solid rgba(255, 255, 0, 0.15);
+        font-family: 'Oswald', sans-serif;
     }
 
 .slot__empty {
@@ -269,13 +263,13 @@ body {
 }
 
 /* =========================================================================
-   4. ДИЗАЙН КАРТОЧЕК С ТЕКСТУРОЙ ESL И ВОДЯНЫМИ ЗНАКАМИ КЛУБОВ
+   4. ДИЗАЙН КОНТРАСТНЫХ КАРТОЧЕК В СТИЛЕ ОФИЦИАЛЬНОЙ ГРАФИКИ ESL
    ========================================================================= */
 
 .player-card {
-    /* Холодный строгий градиент вместо CS-оранжевого */
-    background: linear-gradient(180deg, #1c1d2a 0%, #11121a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    /* Глубокий премиальный темно-угольный градиент с инфографики */
+    background: linear-gradient(180deg, #1d1e24 0%, #111216 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     aspect-ratio: 3 / 5;
     height: auto;
@@ -286,16 +280,17 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    /* Мощная тень создает объем на светлом фоне */
+    box-shadow: 0 10px 25px rgba(18, 19, 24, 0.15);
 }
 
     .player-card:hover {
         transform: translateY(-6px);
-        border-color: rgba(255, 255, 0, 0.25); /* Желтый ESL-отсвет при наведении */
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 0, 0.05);
+        border-color: var(--color-primary); /* Золотое свечение при наведении */
+        box-shadow: 0 15px 30px rgba(18, 19, 24, 0.25), 0 0 15px rgba(222, 155, 53, 0.2);
     }
 
-/* Фото игрока на весь задний фон с мягким спортивным затемнением */
+/* Фото игрока на весь задний фон с мягким затемнением книзу */
 .player-card__bg-avatar {
     position: absolute;
     top: 0;
@@ -305,10 +300,10 @@ body {
     object-fit: cover;
     object-position: top center;
     z-index: 1;
-    background: linear-gradient(to top, #0b0c10 25%, rgba(11, 12, 16, 0) 65%);
+    background: linear-gradient(to top, #111216 20%, rgba(17, 18, 22, 0) 65%);
 }
 
-/* Геометрическая информационная плашка в строгом стиле ESL */
+/* Геометрическая темная плашка под данные */
 .player-card__badge {
     position: relative;
     z-index: 2;
@@ -325,15 +320,15 @@ body {
         right: 0;
         bottom: 0;
         z-index: -1;
-        background: rgba(20, 21, 31, 0.96);
+        background: rgba(18, 19, 24, 0.95);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
-        transform: skewY(-4deg); /* Чуть более строгий и сдержанный наклон */
+        transform: skewY(-4deg);
         transform-origin: top right;
-        border-top: 1px solid rgba(255, 255, 255, 0.03);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-/* Стильный фоновый логотип команды (аккуратный водяной знак) */
+/* Аккуратный водяной знак организации киберспорта */
 .player-card__bg-logo {
     position: absolute;
     bottom: -10px;
@@ -342,16 +337,15 @@ body {
     height: 130px;
     object-fit: contain;
     z-index: -1;
-    filter: grayscale(1) brightness(0.6);
-    opacity: 0.15;
+    filter: grayscale(1) brightness(0.5);
+    opacity: 0.12;
     transform: rotate(-5deg);
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Эффект при наведении: логотип ESL-карты наливается цветом */
 .player-card:hover .player-card__bg-logo {
-    opacity: 0.35;
-    filter: grayscale(0) brightness(0.9);
+    opacity: 0.3;
+    filter: grayscale(0) brightness(0.8);
     transform: rotate(0deg) scale(1.1);
 }
 
@@ -361,12 +355,12 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 2px;
-    color: var(--color-text);
+    color: var(--color-text-light); /* Белый текст на темной плашке */
 }
 
 .player-card__team {
     font-size: 11px;
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     margin-bottom: 12px;
     display: flex;
@@ -375,10 +369,10 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Минималистичный тег роли игрока */
+/* Аккуратный минималистичный тег роли */
 .player-card__role-tag {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--color-text);
+    color: var(--color-text-light);
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 3px;
@@ -386,7 +380,7 @@ body {
     font-weight: 700;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
-/* МАССИВНЫЙ ПЛАТИНОВЫЙ RATING 3.0 С КУРСИВОМ ВНУТРИ ПЛАШКИ */
+/* ЗОЛОТОЙ ХРОМИРОВАННЫЙ RATING 3.0 В СТИЛЕ НАГРАД IEM */
 .player-card__badge-rating {
     display: flex;
     align-items: flex-end;
@@ -395,65 +389,65 @@ body {
     margin-bottom: 12px;
     font-family: 'Oswald', -apple-system, sans-serif;
     font-size: 13px;
-    font-style: italic;
-    font-weight: 900;
-    letter-spacing: 1px;
-    /* Стильный стальной хромированный градиент ESL */
-    background: linear-gradient(135deg, #ffffff 0%, #cfd6df 40%, #a1aab3 60%, #ffffff 100%);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    /* Наложение золотого градиента турнира Кёльн */
+    background: linear-gradient(135deg, #ffffff 0%, #fce38a 40%, #de9b35 70%, #ffffff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.6));
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.7));
 }
 
     .player-card__badge-rating span {
         font-size: 22px;
         line-height: 0.9;
-        font-weight: 900;
+        font-weight: 800;
         letter-spacing: -0.5px;
         margin-left: auto;
         margin-right: 3px;
     }
 
 /* =========================================================================
-   5. ЧЕМПИОНСКИЙ ЗОЛОТОЙ СТИЛЬ ДЛЯ ЗВЕЗДНОГО ИГРОКА (ESL MVP)
+   5. ОФИЦИАЛЬНЫЙ ЗОЛОТОЙ MVP СТИЛЬ ДЛЯ ЗВЕЗДНОГО ИГРОКА (ESL CHAMPION)
    ========================================================================= */
 
 .player-card--star {
-    border: 1px solid var(--color-primary) !important;
-    box-shadow: 0 0 20px rgba(255, 255, 0, 0.2) !important;
+    border: 2px solid var(--color-primary) !important;
+    box-shadow: 0 8px 30px rgba(222, 155, 53, 0.25) !important;
 }
 
-    /* Наливаем плашку Звездного игрока глубоким матовым золотом */
+    /* Наливаем плашку Звездного игрока чистым золотом инфографики */
     .player-card--star .player-card__badge::before {
-        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%) !important;
+        background: linear-gradient(135deg, #fce38a 0%, #de9b35 100%) !important;
     }
 
     .player-card--star .player-card__name {
-        color: #000000 !important;
+        color: #121318 !important; /* Черный текст на золоте */
         font-weight: 900;
     }
 
     .player-card--star .player-card__team {
-        color: rgba(0, 0, 0, 0.6) !important;
+        color: rgba(18, 19, 24, 0.6) !important;
         font-weight: 700;
     }
 
     .player-card--star .player-card__role-tag {
-        background: #000000 !important;
+        background: var(--color-surface-dark) !important;
         color: var(--color-primary) !important;
-        border: 1px solid rgba(255, 255, 0, 0.3) !important;
+        border: 1px solid rgba(222, 155, 53, 0.3) !important;
     }
 
     /* Темное золото для рейтинга на MVP карте */
     .player-card--star .player-card__badge-rating {
-        background: linear-gradient(135deg, #111 0%, #333 100%) !important;
+        background: linear-gradient(135deg, #111116 0%, #443311 100%) !important;
         -webkit-background-clip: text !important;
         -webkit-text-fill-color: transparent !important;
     }
 
     .player-card--star .player-card__bg-logo {
         filter: grayscale(1) brightness(0) !important;
-        opacity: 0.06 !important;
+        opacity: 0.08 !important;
     }
 
 /* Селектор Звезды (радио-кнопка) */
@@ -467,13 +461,13 @@ body {
 }
 
 .player-card--star .star-toggle-container {
-    background: rgba(0, 0, 0, 0.15) !important;
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    background: rgba(0, 0, 0, 0.12) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 .star-label {
     font-size: 11px;
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -481,10 +475,11 @@ body {
     gap: 6px;
     text-transform: uppercase;
     font-weight: 700;
+    font-family: 'Oswald', sans-serif;
 }
 
 .player-card--star .star-label {
-    color: #000000 !important;
+    color: #121318 !important;
 }
 
 .star-label input {
@@ -493,7 +488,7 @@ body {
 }
 
 /* =========================================================================
-   6. РЫНОЧНАЯ СЕТКА И СТРОГИЕ КНОПКИ ТРАНСФЕРОВ
+   6. РЫНОЧНАЯ СЕТКА И КНОПКИ ТРАНСФЕРОВ (IEM MINIMAL)
    ========================================================================= */
 
 .market-grid {
@@ -517,8 +512,8 @@ body {
 }
 
 .btn--primary {
-    background-color: var(--color-surface);
-    color: var(--color-text);
+    background-color: var(--color-surface-dark);
+    color: var(--color-text-light);
     width: auto;
     display: block;
     margin: 0 auto;
@@ -527,21 +522,21 @@ body {
 }
 
     .btn--primary:hover:not(:disabled) {
-        background-color: #1c1d2a;
+        background-color: #1c1d24;
         border-color: var(--color-primary);
     }
 
-/* Кнопка покупки на рынке */
+/* Золотая контрастная кнопка покупки */
 .btn--buy {
-    background-color: rgba(255, 255, 0, 0.04);
+    background-color: rgba(222, 155, 53, 0.08);
     color: var(--color-primary);
-    border: 1px solid rgba(255, 255, 0, 0.2);
+    border: 1px solid rgba(222, 155, 53, 0.3);
     margin-top: auto;
 }
 
     .btn--buy:hover:not(:disabled) {
         background-color: var(--color-primary);
-        color: #000000;
+        color: #121318;
         border-color: var(--color-primary);
     }
 
@@ -549,7 +544,7 @@ body {
         opacity: 0.25;
         cursor: not-allowed;
         border-color: rgba(255, 255, 255, 0.02);
-        color: var(--color-text-muted);
+        color: rgba(255, 255, 255, 0.2);
         background: transparent;
     }
 
@@ -557,23 +552,23 @@ body {
 .btn--remove {
     background-color: rgba(255, 74, 74, 0.03);
     color: var(--color-danger);
-    border: 1px solid rgba(255, 74, 74, 0.15);
+    border: 1px solid rgba(255, 74, 74, 0.2);
 }
 
     .btn--remove:hover {
         background-color: var(--color-danger);
-        color: #fff;
+        color: #ffffff;
         border-color: var(--color-danger);
     }
 
 .player-card--star .btn--remove {
-    background-color: rgba(0, 0, 0, 0.8) !important;
-    color: #fff !important;
-    border-color: #000 !important;
+    background-color: var(--color-surface-dark) !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
 }
 
 /* =========================================================================
-   7. МОБИЛЬНАЯ АДАПТИВНОСТЬ (FLEX REWIND)
+   7. МОБИЛЬНАЯ АДАПТИВНОСТЬ (IEM SMART VIEW)
    ========================================================================= */
 
 @media (max-width: 992px) {
@@ -611,7 +606,6 @@ body {
         padding: 8px 15px;
     }
 
-    /* Мобильный флексбокс с точным центрированием */
     .team-slots, .market-grid {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -619,7 +613,7 @@ body {
         justify-content: center !important;
     }
 
-        /* Одинокая карточка в последнем ряду встанет ровно по центру */
+        /* Карточки идут строго по 2 в ряд */
         .team-slots .slot,
         .market-grid .player-card {
             aspect-ratio: auto !important;
@@ -638,7 +632,7 @@ body {
                 min-height: 100% !important;
             }
 
-            /* Скрываем рамку занятого слота */
+            /* Растворяем границы заполненного слота */
             .team-slots .slot:has(.player-card) {
                 border: none !important;
                 background: transparent !important;
@@ -682,12 +676,14 @@ body {
         font-size: 11px;
     }
 
-    /* Мобильная стрелочка */
+    /* Кнопка-стрелочка меню */
     #toggle-stats-btn {
         display: flex !important;
+        background: var(--color-surface-dark) !important;
+        border-color: rgba(255,255,255,0.1) !important;
     }
 
-    /* Обертка сворачивания шапки */
+    /* Контейнер сворачивания */
     .stats-bar-wrapper {
         width: 100%;
         max-height: 500px;
@@ -709,6 +705,7 @@ body {
 
     .ticker-wrapper {
         height: 34px;
+        background: #ffffff !important;
     }
 
     .ticker__title {
@@ -729,7 +726,6 @@ body {
 
     .player-card, .slot {
         height: 310px;
-        max-width: 250px;
         margin: 0 auto;
         width: 100% !important;
         max-width: 100% !important;
