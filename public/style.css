@@ -1,6 +1,7 @@
 /* =========================================================================
    1. ПЕРЕМЕННЫЕ ESL BRANDING, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
    ========================================================================= */
+@import url('https://googleapis.com');
 
 :root {
     --color-bg: #0b0c10; /* Ультра-темный матовый графит (база ESL) */
@@ -95,7 +96,7 @@ body {
 }
 
 .section-title {
-    font-family: 'Impact', sans-serif;
+    font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
     font-style: italic;
     font-size: 22px;
     margin-bottom: 25px;
@@ -125,10 +126,10 @@ body {
 .ticker__title {
     background: var(--color-primary);
     color: #000000; /* Контрастный черный текст на желтом фоне */
-    font-family: 'Impact', sans-serif;
-    font-size: 12px;
+    font-family: 'Oswald', 'Arial Black', sans-serif;
+    font-size: 11px;
     font-style: italic;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     display: flex;
     align-items: center;
     padding: 0 18px;
@@ -369,7 +370,7 @@ body {
     background: rgba(0, 0, 0, 0.4);
     padding: 6px 0px;
     margin-bottom: 12px;
-    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-family: 'Oswald', -apple-system, sans-serif;
     font-size: 13px;
     font-style: italic;
     font-weight: 900;
@@ -382,10 +383,10 @@ body {
 }
 
     .player-card__badge-rating span {
-        font-size: 24px;
+        font-size: 22px;
         line-height: 0.9;
         font-weight: 900;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
         margin-left: auto;
         margin-right: 3px;
     }
