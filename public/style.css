@@ -91,10 +91,8 @@ body {
 .stats-bar__item {
     /* Полупрозрачный матовый темный фон */
     background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.03) !important;
-    color: var(--color-text-light);
+    color: var(--color-primary) !important;
     padding: 8px 16px;
-    border-radius: 4px; /* Мягкое скругление по гайдлайнам ESL */
     font-weight: 700;
     font-size: 13px;
     font-family: 'Oswald', sans-serif;
@@ -105,6 +103,8 @@ body {
     justify-content: center;
     white-space: nowrap;
     transition: background 0.2s ease;
+    border: 2px solid var(--color-primary) !important;
+    box-shadow: 6px 0 15px rgba(0, 0, 0, 0.3) !important;
 }
 
     /* Эффект наведения для плашки-кнопки "Таблица лидеров" */
