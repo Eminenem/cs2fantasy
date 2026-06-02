@@ -53,7 +53,7 @@ body {
 
 .header {
     /* Глубокий матовый графит с эффектом дорогого стекла */
-    background-color: rgba(17, 18, 23, 0.92) !important;
+    background-color: var(--color-surface-dark) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     /* Тонкая, едва заметная золотистая полоса снизу вместо грубой рамки */
@@ -63,6 +63,7 @@ body {
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: var(--color-primary) !important;
 }
 
 .header__container {
