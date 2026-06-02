@@ -591,9 +591,11 @@ body {
     /* 🔥 Перестраиваем слоты команды: на телефонах они идут по 2 в ряд */
     .team-slots {
         display: flex;
-        flex-wrap: wrap;    
+        flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
+        transform: none !important;
+        flex: 0 1 calc(50% - 6px) !important;
     }
 
     /* 🔥 Рынок игроков: тоже по 2 карточки в ряд, чтобы не растягивать экран */
@@ -603,6 +605,7 @@ body {
         flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
+        flex: 0 1 calc(50% - 6px) !important;
     }
 
     /* Ужимаем пропорции карточек для мобильных экранов */
@@ -612,6 +615,7 @@ body {
         min-height: 290px;
         width: calc(50% - 6px);
         box-sizing: border-box;
+        flex: 0 1 calc(50% - 6px) !important;
     }
 
     .player-card__badge {
