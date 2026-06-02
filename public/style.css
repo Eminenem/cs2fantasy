@@ -594,6 +594,7 @@ body {
         flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
+        transform: none !important;
     }
 
     /* 🔥 Рынок игроков: тоже по 2 карточки в ряд, чтобы не растягивать экран */
