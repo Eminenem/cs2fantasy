@@ -39,22 +39,31 @@
         }
     </style>
     <header class="header">
-        <div class="container header__container">
+        <div class="container header__container" style="position: relative;">
             <h1 class="header__title">CS2 <span style="color: rgba(200,200,200,0.85)">Fantasy</span></h1>
-            <div class="stats-bar">
-                <div class="stats-bar__item" id="countdown-timer" style="background: rgba(222, 155, 53, 0.1); color: var(--color-primary); letter-spacing: 0.5px;">
-                    До закрытия: --:--:--
-                </div>
-                <!-- Сюда app.js будет выводить статус: заблокирован состав или нет -->
-                <div class="stats-bar__item" id="lock-status" style="background: rgba(255, 74, 74, 0.1); color: var(--color-danger)">Загрузка статуса...</div>
-                <div class="stats-bar__item">Очки команды: <span id="score">0</span></div>
-                <!-- Кнопка перехода на страницу рейтинга предсказателей -->
-                <div class="stats-bar__item" style="background: var(--color-primary); padding: 0; overflow: hidden; display: flex;">
-                    <a href="/leaderboard.html" style="color: #000; font-weight: bold; text-decoration: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 10px 20px; box-sizing: border-box;">
-                        Таблица лидеров
-                    </a>
+
+            <!-- 🔥 ДОБАВЛЕНО: Обертка для плавного сворачивания всей панели статистики -->
+            <div class="stats-bar-wrapper" id="mobile-stats-wrapper">
+                <div class="stats-bar">
+                    <div class="stats-bar__item" id="countdown-timer" style="background: rgba(222, 155, 53, 0.1); color: var(--color-primary); letter-spacing: 0.5px;">
+                        До закрытия: --:--:--
+                    </div>
+                    <!-- Сюда app.js будет выводить статус: заблокирован состав или нет -->
+                    <div class="stats-bar__item" id="lock-status" style="background: rgba(255, 74, 74, 0.1); color: var(--color-danger)">Загрузка статуса...</div>
+                    <div class="stats-bar__item">Очки команды: <span id="score">0</span></div>
+                    <!-- Кнопка перехода на страницу рейтинга предсказателей -->
+                    <div class="stats-bar__item" style="background: var(--color-primary); padding: 0; overflow: hidden; display: flex;">
+                        <a href="/leaderboard.html" style="color: #000; font-weight: bold; text-decoration: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 10px 20px; box-sizing: border-box;">
+                            Таблица лидеров
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <!-- 🔥 ДОБАВЛЕНО: Кнопка-стрелочка. Появляется только на мобильных (управляется через style.css) -->
+            <button id="toggle-stats-btn" style="display: none; background: rgba(55, 55, 60, 1); border: 1px solid rgba(225, 225, 245, 0.15); color: var(--color-primary); border-radius: 50%; width: 32px; height: 32px; font-weight: bold; font-size: 16px; cursor: pointer; position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%); z-index: 110; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); outline: none;">
+                ▲
+            </button>
         </div>
     </header>
 
