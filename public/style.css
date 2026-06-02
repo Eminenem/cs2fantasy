@@ -613,7 +613,6 @@ body {
         height: 290px;
         min-height: 290px;
         box-sizing: border-box;
-        width: calc(50% - 6px) !important;
     }
 
         .player-card__badge {
@@ -672,6 +671,16 @@ body {
     .ranking-item {
         padding: 0 10px;
         font-size: 11px;
+    }
+    .team-slots .slot,
+    .market-grid .player-card {
+        aspect-ratio: auto !important;
+        height: 290px !important;
+        min-height: 290px !important;
+        box-sizing: border-box !important;
+        width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        flex: 0 1 calc(50% - 6px) !important;
     }
 }
 
