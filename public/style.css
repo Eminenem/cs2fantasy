@@ -613,10 +613,8 @@ body {
         height: 290px;
         min-height: 290px;
         box-sizing: border-box;
+        width: calc(50% - 6px) !important;
     }
-        .slot{
-            width: calc(50% - 6px) !important;
-        }
 
         .player-card__badge {
             padding: 10px;
