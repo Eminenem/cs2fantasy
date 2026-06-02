@@ -19,6 +19,10 @@
     padding: 0;
 }
 
+/* =========================================================================
+   1. ПРЕМЬЕРНЫЙ МОБИЛЬНЫЙ И ДЕСКТОПНЫЙ ФОН: ГЕКСАГОНАЛЬНЫЕ ИСКАЖЕННЫЕ ГРАНИ
+   ========================================================================= */
+
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -26,23 +30,37 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     position: relative;
-    background-image: radial-gradient(circle at 15% 20%, rgba(197, 181, 159, 0.04) 0%, transparent 35%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+    /* 🔥 СДЕЛАНО ЯРЧЕ: Насыщенные золотисто-кремовые световые лучи по углам */
+    background-image: radial-gradient(circle at 10% 10%, rgba(197, 181, 159, 0.12) 0%, transparent 45%), radial-gradient(circle at 90% 90%, rgba(126, 132, 148, 0.1) 0%, transparent 50%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
     background-attachment: fixed;
 }
 
+    /* 🔥 СДЕЛАНО: Кривая, трехмерная гексагональная сетка со «скачущей» толщиной линий */
     body::before {
         content: "";
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: -10%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
         z-index: -1;
-        opacity: 0.25;
         pointer-events: none;
-        background-image: linear-gradient(30deg, transparent 49.5%, rgba(197, 181, 159, 0.25) 50%, transparent 50.5%), linear-gradient(-30deg, transparent 49.5%, rgba(126, 132, 148, 0.12) 50%, transparent 50.5%);
-        background-size: 160px 276px;
+        /* 🌟 СДЕЛАНО ЯРЧЕ: Увеличили прозрачность линий, чтобы узоры четко читались */
+        opacity: 0.38;
+        /* Базовый гексагональный узор с разной толщиной (разница шага градиентов) */
+        background-image: linear-gradient(30deg, transparent 49%, rgba(197, 181, 159, 0.4) 50%, transparent 51%), linear-gradient(-30deg, transparent 48.5%, rgba(197, 181, 159, 0.5) 50%, transparent 51.5%), linear-gradient(90deg, transparent 49.3%, rgba(126, 132, 148, 0.25) 50%, transparent 50.7%);
+        background-size: 140px 242px; /* Размер ячеек гексагональной сетки */
+        /* 🔥 ЭФФЕКТ ПРЕЛОМЛЕНИЯ И ИСКАЖЕНИЯ ГЕКСОВ (Кривим плоскость сетки) */
+        transform: perspective(800px) /* Создаем глубину собора */
+        rotateX(15deg) /* Наклоняем гексы вдаль */
+        rotateY(-5deg) /* Кривим влево для динамики инфографики */
+        scale(1.1); /* Слегка растягиваем для компенсации поворота */
+        transform-origin: center center;
+        /* Плавное затухание гексов по краям, чтобы сетка "растворялась" */
+        mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
     }
+
 
 .container {
     max-width: 1200px;
