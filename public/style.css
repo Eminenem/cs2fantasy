@@ -233,23 +233,6 @@ body {
         margin: 0 !important;
     }
 
-    /* Мелкий моноширинный подзаголовок аккуратно прижимается к правому краю */
-    .section-title::after {
-        content: "Tier-1 Events of the season";
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 11px;
-        color: var(--color-text-muted);
-        text-transform: none;
-        letter-spacing: 1px;
-        font-weight: 400;
-        margin-left: 20px; /* Отодвигаем подзаголовок вправо от основного текста */
-        display: inline-block !important;
-    }
-
-.market .section-title::after {
-    content: "Available professional players registry";
-}
-
 
 .team-slots, .market-grid {
     display: grid !important;
@@ -550,11 +533,6 @@ body {
         width: 100% !important;
         overflow: visible !important;
     }
-
-        /* Дополнительно зажимаем подзаголовок, чтобы он на мобильных не растягивал title */
-        .section-title::after {
-            display: none !important; /* Скрываем мелкий технический текст подзаголовка на смартфонах, чтобы освободить место */
-        }
 
     /* Флекс-контейнер для мобильных сеток */
     .team-slots, .market-grid {
