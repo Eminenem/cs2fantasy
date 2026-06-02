@@ -48,8 +48,6 @@
                     <div class="stats-bar__item" id="countdown-timer" style="background: rgba(222, 155, 53, 0.1); color: var(--color-primary); letter-spacing: 0.5px;">
                         До закрытия: --:--:--
                     </div>
-                    <!-- Сюда app.js будет выводить статус: заблокирован состав или нет -->
-                    <div class="stats-bar__item" id="lock-status" style="background: rgba(255, 74, 74, 0.1); color: var(--color-danger)">Загрузка статуса...</div>
                     <div class="stats-bar__item">Ваши очки: <span style="margin-left:5px !important;"id="score">0</span></div>
                     <!-- Кнопка перехода на страницу рейтинга предсказателей -->
                     <div class="stats-bar__item" style="background: var(--color-primary); padding: 0; overflow: hidden; display: flex;">
@@ -83,8 +81,6 @@
             <div class="team-slots" id="team-slots">
                 <!-- Слоты генерируются через JS -->
             </div>
-            <!-- КНОПКА ИЗМЕНЕНА: Теперь она отправляет состав на бэкенд без симуляции в браузере -->
-            <button class="btn btn--primary" id="btn-calculate" disabled>Закрепить состав на Тур 1</button>
         </section>
 
         <!-- Рынок доступных игроков -->
