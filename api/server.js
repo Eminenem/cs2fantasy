@@ -11,7 +11,6 @@ app.use(express.json());
 // Раздаем статические файлы фронтенда из папки public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Инициализация Firebase Admin SDK
 let serviceAccount;
 
 try {
@@ -70,18 +69,46 @@ const authenticateFirebaseToken = async (req, res, next) => {
 };
 
 // Загрузка профиля (очки + текущий состав + статус блокировки)
+// Загрузка профиля пользователя + глобальных настроек турнира (дедлайна)
 app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
     try {
         const userDoc = await db.collection('users').doc(req.user.uid).get();
-        if (userDoc.exists) {
-            res.json({ success: true, data: userDoc.data() });
-        } else {
-            res.json({ success: true, data: { score: 0, isLocked: false, currentTeam: [], starPlayerId: null } });
+
+        // Получаем глобальные настройки турнира (время закрытия) из специального документа config
+        const configDoc = await db.collection('settings').doc('tournament').get();
+        let deadline = null;
+        if (configDoc.exists) {
+            deadline = configDoc.data().deadline; // Дата-время в формате строки (например, "2026-06-06T18:00")
         }
+
+        // Если в конфиге время прошло, принудительно считаем, что состав заблокирован
+        let isLocked = false;
+        let userData = { score: 0, currentTeam: [], starPlayerId: null };
+
+        if (userDoc.exists) {
+            userData = userDoc.data();
+            isLocked = userData.isLocked || false;
+        }
+
+        if (deadline && new Date() > new Date(deadline)) {
+            isLocked = true; // 🔥 Железная блокировка на сервере, если время вышло!
+        }
+
+        res.json({
+            success: true,
+            data: {
+                score: userData.score || 0,
+                isLocked: isLocked,
+                currentTeam: userData.currentTeam || [],
+                starPlayerId: userData.starPlayerId || null,
+                deadline: deadline // отдаем фронтенду время для таймера
+            }
+        });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 });
+
 
 // Создание базового профиля при первой авторизации
 app.post('/api/create-profile', authenticateFirebaseToken, async (req, res) => {
@@ -320,6 +347,19 @@ app.post('/api/admin/close-tour', async (req, res) => {
 
         await batch.commit();
         res.json({ success: true, message: "Тур официально завершен! Все составы успешно заархивированы в историю профилей, трансферное окно открыто." });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
+// Эндпоинт для админа: Установка времени дедлайна тура
+app.post('/api/admin/set-deadline', async (req, res) => {
+    const { secretKey, deadline } = req.body;
+    if (secretKey !== process.env.ADMIN_SECRET_KEY) return res.status(403).json({ error: "Отказ" });
+
+    try {
+        await db.collection('settings').doc('tournament').set({ deadline }, { merge: true });
+        res.json({ success: true, message: "Дедлайн тура успешно установлен!" });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
