@@ -1,18 +1,21 @@
 /* =========================================================================
    1. ПЕРЕМЕННЫЕ ESL BRANDING, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
    ========================================================================= */
+
 @import url('https://googleapis.com');
 
 :root {
-    --color-bg: #0b0c10; /* Ультра-темный матовый графит (база ESL) */
-    --color-surface: #14151f; /* Асфальтовый серый для блоков и плашек */
-    --color-surface-hover: #1c1d2a; /* Цвет плашек при наведении */
-    --color-primary: #ffff00; /* Фирменный неоново-желтый / лимонный ESL */
-    --color-text: #f3f4f6; /* Чистый холодный белый для читаемости */
-    --color-text-muted: #71717a; /* Благородный стальной серый для второстепенного текста */
-    --color-danger: #ff4a4a; /* Красный акцент */
-    --color-success: #00ff66; /* Кислотно-зеленый для подтвержденных статусов */
-    --border-global: rgba(255, 255, 0, 0.08); /* Тонкие фирменные неоновые границы */
+    --color-bg: #07080d; /* Ультра-глубокий полуночный графит */
+    --color-surface: rgba(20, 21, 31, 0.75); /* Полупрозрачное стекло для плашек */
+    --color-surface-hover: rgba(28, 29, 42, 0.85);
+    --color-primary: #ffff00; /* Фирменный кислотно-желтый ESL */
+    --color-text: #f3f4f6;
+    --color-text-muted: #64748b;
+    --color-danger: #ff4a4a;
+    --color-success: #00ff66;
+    /* 🔥 КРИСТАЛЛИЧЕСКИЕ ЦВЕТА COLOGNE MAJOR */
+    --color-crystal-blue: #0055ff; /* Насыщенный синий кристалл */
+    --color-crystal-cyan: #00d2ff; /* Неоновый голубой лед */
 }
 
 * {
@@ -27,7 +30,33 @@ body {
     color: var(--color-text);
     line-height: 1.5;
     overflow-x: hidden;
+    position: relative;
+    /* 🔥 КИНЕМАТОГРАФИЧНЫЙ ФОН: Глубокие сине-голубые кристаллы и подсветка собора */
+    background-image:
+    /* 1. Левое верхнее неоново-голубое свечение кристалла */
+    radial-gradient(circle at 10% 15%, rgba(0, 210, 255, 0.07) 0%, transparent 40%),
+    /* 2. Правое нижнее синее свечение сцены */
+    radial-gradient(circle at 90% 85%, rgba(0, 85, 255, 0.08) 0%, transparent 45%),
+    /* 3. Центральный витражный столб света */
+    linear-gradient(135deg, rgba(7, 8, 13, 1) 0%, rgba(12, 16, 28, 1) 50%, rgba(7, 8, 13, 1) 100%);
+    background-attachment: fixed;
 }
+
+    /* 🔥 ДЕКОРАТИВНАЯ ГЕОМЕТРИЧЕСКАЯ МАСКА ВИТРАЖА НА ЗАДНИЙ ПЛАН */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Прячем строго за контент */
+        opacity: 0.12; /* Тонкая, не отвлекающая текстура */
+        pointer-events: none;
+        /* Рисуем тонкие пересекающиеся грани готического витража / кристалла */
+        background-image: linear-gradient(30deg, transparent 49%, var(--color-crystal-cyan) 50%, transparent 51%), linear-gradient(-30deg, transparent 49%, var(--color-crystal-blue) 50%, transparent 51%), linear-gradient(90deg, transparent 49%, rgba(0, 210, 255, 0.3) 50%, transparent 51%);
+        background-size: 120px 208px; /* Геометрическая ячеистая структура */
+    }
 
 .container {
     max-width: 1200px;
@@ -72,17 +101,14 @@ body {
 }
 
 .stats-bar__item {
-    background: #1c1d2a;
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(28, 29, 42, 0.5) !important; /* Полупрозрачный фон */
+    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(8px); /* Размытие кристаллического фона под плашкой */
+    -webkit-backdrop-filter: blur(8px);
     padding: 10px 20px;
     border-radius: 6px;
-    font-weight: 700;
+    font-weight: bold;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
 }
 
     .stats-bar__item span {
@@ -203,14 +229,11 @@ body {
 }
 
 .slot {
-    background: var(--color-surface);
-    border: 1px dashed rgba(255, 255, 255, 0.08);
+    background: rgba(20, 21, 31, 0.4) !important;
+    border: 1px dashed rgba(0, 212, 255, 0.15) !important; /* Голубой неоновый пунктир слота */
     border-radius: 8px;
     position: relative;
     aspect-ratio: 3 / 5;
-    height: auto;
-    min-height: unset;
-    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
     .slot::before {
