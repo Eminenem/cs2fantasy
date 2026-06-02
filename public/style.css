@@ -220,7 +220,8 @@ body {
 
     .section-title span {
         color: var(--color-primary);
-        display: inline-block;
+        /* 🔥 ИСПРАВЛЕНО: display: inline запрещает браузеру рвать строку и переносить цифры счетчика */
+        display: inline !important;
         margin-right: 4px;
     }
 
@@ -527,10 +528,11 @@ body {
         padding: 8px 15px;
     }
 
-    /* Заголовки разделов на мобильных */
     .section-title {
-        font-size: 18px !important;
-        white-space: normal !important;
+        font-size: 16px !important; /* Немного ужимаем размер, чтобы заголовок гарантированно влезал в экран любого телефона */
+        white-space: nowrap !important; /* Железный запрет на перенос слов на новую строчку */
+        flex-direction: row !important; /* Выстраиваем слова строго слева направо */
+        display: block !important; /* Возвращаем стандартное текстовое отображение */
     }
 
     /* Флекс-контейнер для мобильных сеток */
