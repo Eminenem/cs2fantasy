@@ -594,8 +594,6 @@ body {
         flex-wrap: wrap;
         gap: 12px;
         justify-content: center;
-        transform: none !important;
-        flex: 0 1 calc(50% - 6px) !important;
     }
 
     /* 🔥 Рынок игроков: тоже по 2 карточки в ряд, чтобы не растягивать экран */
@@ -613,9 +611,7 @@ body {
         aspect-ratio: auto;
         height: 290px;
         min-height: 290px;
-        width: calc(50% - 6px);
         box-sizing: border-box;
-        flex: 0 1 calc(50% - 6px) !important;
     }
 
     .player-card__badge {
