@@ -359,15 +359,16 @@ body {
     height: 110px;
     object-fit: contain;
     z-index: -1;
-    filter: grayscale(1) brightness(0);
+    filter: grayscale(1) brightness(0.3) !important; /* Угольный силуэт на благородном бежевом */
     opacity: 0.08;
     transform: rotate(-5deg);
     transition: all 0.3s ease;
 }
 
 .player-card:hover .player-card__bg-logo {
-    opacity: 0.18;
-    transform: scale(1.05) rotate(0deg);
+    filter: grayscale(0) brightness(1) !important; /* Намертво сбрасываем монохром */
+    opacity: 0.38 !important; /* Делаем логотип чуть ярче и детальнее */
+    transform: scale(1.1) rotate(0deg) translate(-3px, -3px) !important; /* Легкое смещение */
 }
 
 .player-card__name {
