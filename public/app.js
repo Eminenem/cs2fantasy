@@ -97,7 +97,7 @@ async function init() {
 function updateLockStatusUI() {
     if (!lockStatusEl) return;
     if (state.isLocked) {
-        lockStatusEl.textContent = "Состав закреплен 🔒";
+        lockStatusEl.textContent = "Состав закреплен";
         lockStatusEl.style.background = "rgba(76, 175, 80, 0.1)";
         lockStatusEl.style.color = "var(--color-success)";
         if (calculateBtn) {
@@ -105,7 +105,7 @@ function updateLockStatusUI() {
             calculateBtn.disabled = true;
         }
     } else {
-        lockStatusEl.textContent = "Состав не закреплен 🔓";
+        lockStatusEl.textContent = "Состав не закреплен";
         lockStatusEl.style.background = "rgba(255, 74, 74, 0.1)";
         lockStatusEl.style.color = "var(--color-danger)";
         if (calculateBtn) {
@@ -268,7 +268,7 @@ if (calculateBtn) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert("🔒 Ваш состав успешно закреплен на Тур 1! Теперь ждите результатов реальных матчей.");
+                    alert("Ваш состав успешно закреплен на 1 день! Теперь ждите результатов реальных матчей.");
                     state.isLocked = true;
                     updateLockStatusUI();
                     renderTeam();
@@ -335,7 +335,7 @@ function startDeadlineCountdown(deadlineString) {
 
         // Если время вышло
         if (diff <= 0) {
-            timerEl.textContent = "ТРАНСФЕРЫ ЗАКРЫТЫ 🛑";
+            timerEl.textContent = "Редактирование составов закрыто";
             timerEl.style.color = "var(--color-danger)";
             timerEl.style.background = "rgba(255, 74, 74, 0.1)";
 
@@ -360,7 +360,7 @@ function startDeadlineCountdown(deadlineString) {
         const fM = minutes.toString().padStart(2, '0');
         const fS = seconds.toString().padStart(2, '0');
 
-        timerEl.textContent = `⏳ ДО СТАРТА: ${fH}:${fM}:${fS}`;
+        timerEl.textContent = `ДО СТАРТА: ${fH}:${fM}:${fS}`;
     }
 
     // Запускаем ежесекундный интервал
