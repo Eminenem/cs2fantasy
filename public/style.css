@@ -52,18 +52,14 @@ body {
 }
 
 .header {
-    /* Глубокий матовый графит с эффектом дорогого стекла */
-    background-color: var(--color-surface-dark) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    /* Тонкая, едва заметная золотистая полоса снизу вместо грубой рамки */
-    border-bottom: 1px solid rgba(197, 181, 159, 0.25) !important;
+    background-color: var(--color-surface-dark) !important; /* Глубокий монолитный черный */
+    /* Тонкая, изящная золотая линия снизу, отделяющая шапку от сайта */
+    border-bottom: 2px solid var(--color-primary) !important;
     padding: 12px 0 !important;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    color: var(--color-primary) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .header__container {
@@ -72,19 +68,19 @@ body {
     align-items: center;
 }
 
-/* Строгий турнирный логотип */
+/* Турнирный логотип */
 .header__title {
     font-family: 'Oswald', sans-serif;
     font-weight: 800;
     font-size: 22px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: var(--color-text-light);
+    color: var(--color-text-light) !important; /* Контрастный белый текст */
     white-space: nowrap;
 }
 
     .header__title span {
-        color: var(--color-primary);
+        color: var(--color-primary) !important; /* Фирменное бежевое золото */
     }
 
 .stats-bar {
@@ -131,8 +127,8 @@ body {
 }
 
 .ticker__title {
-    background: var(--color-surface-dark);
-    color: var(--color-primary);
+    background-color: var(--color-surface-dark) !important; /* Идентичный глубокий черный */
+    color: var(--color-primary) !important; /* Золотые буквы Кёльна */
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     font-size: 11px;
@@ -141,7 +137,9 @@ body {
     align-items: center;
     padding: 0 18px;
     z-index: 10;
-    box-shadow: 6px 0 15px rgba(0, 0, 0, 0.15);
+    /* Тонкая правая золотая граница, отделяющая заголовок от движущейся ленты */
+    border-right: 2px solid var(--color-primary) !important;
+    box-shadow: 6px 0 15px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
     white-space: nowrap;
 }
