@@ -33,8 +33,6 @@ const marketGrid = document.getElementById('market-grid');
 const teamSlotsContainer = document.getElementById('team-slots');
 const scoreEl = document.getElementById('score');
 const teamCountEl = document.getElementById('team-count');
-const calculateBtn = document.getElementById('btn-calculate');
-const lockStatusEl = document.getElementById('lock-status');
 
 // Главная функция инициализации приложения
 async function init() {
@@ -80,7 +78,6 @@ async function init() {
     }
 
     if (scoreEl) scoreEl.textContent = state.score.toString();
-    updateLockStatusUI();
 
     renderTeam();
     renderMarket();
@@ -93,26 +90,7 @@ async function init() {
         loader.style.visibility = 'hidden';
     }
 }
-// Обновление текстового статуса блокировки и кнопок в шапке
-function updateLockStatusUI() {
-    if (!lockStatusEl) return;
-    if (state.isLocked) {
-        lockStatusEl.textContent = "Состав закреплен";
-        lockStatusEl.style.background = "rgba(76, 175, 80, 0.1)";
-        lockStatusEl.style.color = "var(--color-success)";
-        if (calculateBtn) {
-            calculateBtn.textContent = "Состав заблокирован";
-            calculateBtn.disabled = true;
-        }
-    } else {
-        lockStatusEl.textContent = "Состав не закреплен";
-        lockStatusEl.style.background = "rgba(255, 74, 74, 0.1)";
-        lockStatusEl.style.color = "var(--color-danger)";
-        if (calculateBtn) {
-            calculateBtn.textContent = "Закрепить состав на Тур 1";
-        }
-    }
-}
+
 
 // Функция подсчета лимита игроков из одного реального клуба
 function getTeamCountInFantasy(teamName) {
@@ -220,8 +198,9 @@ window.buyPlayer = function (id) {
         state.myTeam[targetIndex].player = player;
         renderTeam();
         renderMarket();
+        autoSaveTeamToServer();
     } else {
-        alert(`Ошибка! Слот для роли "${player.role}" уже заполнен. Вы не можете поставить его на другую позицию.`);
+        alert(`Ошибка! Слот для роли "${player.role}" уже заполнен.`);
     }
 };
 
@@ -229,11 +208,10 @@ window.removePlayer = function (index) {
     if (state.isLocked) return;
     if (state.myTeam[index].player) {
         state.myTeam[index].player = null;
-        if (state.starPlayerIndex === index) {
-            state.starPlayerIndex = null;
-        }
+        if (state.starPlayerIndex === index) state.starPlayerIndex = null;
         renderTeam();
         renderMarket();
+        autoSaveTeamToServer(); // 🔥 Автосохранение в облако
     }
 };
 
@@ -241,44 +219,35 @@ window.setStarPlayer = function (index) {
     if (state.isLocked) return;
     state.starPlayerIndex = index;
     renderTeam();
+    autoSaveTeamToServer(); // 🔥 Автосохранение в облако
 };
 
-// Обработчик кнопки фиксации состава (Отправляет ID на бэкенд)
-if (calculateBtn) {
-    calculateBtn.addEventListener('click', () => {
-        if (state.isLocked) return;
+// Функция автоматического сохранения состава в облако при любых изменениях
+function autoSaveTeamToServer() {
+    if (state.isLocked) return; // Если дедлайн прошел, сохранение заблокировано
 
-        const teamIds = state.myTeam.map(slot => slot.player ? slot.player.id : null);
-        const starPlayerId = state.myTeam[state.starPlayerIndex]?.player?.id || null;
+    const teamIds = state.myTeam.map(slot => slot.player ? slot.player.id : null);
+    const starPlayerId = state.myTeam[state.starPlayerIndex]?.player?.id || null;
 
-        if (teamIds.includes(null) || !starPlayerId) {
-            alert("Необходимо заполнить все 5 слотов команды и выбрать Звездного игрока!");
-            return;
-        }
+    const token = localStorage.getItem('token');
+    if (!token) return;
 
-        const token = localStorage.getItem('token');
-        fetch('/api/lock-team', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ teamIds, starPlayerId })
+    // Отправляем текущее состояние состава на бэкенд
+    fetch('/api/lock-team', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ teamIds, starPlayerId })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Состав успешно автосохранен на сервере.");
+            }
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Ваш состав успешно закреплен на 1 день! Теперь ждите результатов реальных матчей.");
-                    state.isLocked = true;
-                    updateLockStatusUI();
-                    renderTeam();
-                    renderMarket();
-                } else {
-                    alert("Ошибка фиксации: " + data.message);
-                }
-            })
-            .catch(err => console.error("Ошибка сети при блокировке состава:", err));
-    });
+        .catch(err => console.error("Ошибка автосохранения состава:", err));
 }
 
 // Автоисправление картинок
@@ -333,16 +302,13 @@ function startDeadlineCountdown(deadlineString) {
         const now = new Date();
         const diff = deadlineDate - now;
 
-        // Если время вышло
         if (diff <= 0) {
-            timerEl.textContent = "Редактирование составов закрыто";
+            timerEl.textContent = "ТРАНСФЕРЫ ЗАКРЫТЫ 🛑";
             timerEl.style.color = "var(--color-danger)";
             timerEl.style.background = "rgba(255, 74, 74, 0.1)";
 
-            // Если сайт еще не был заблокирован, принудительно блокируем интерфейс
             if (!state.isLocked) {
                 state.isLocked = true;
-                updateLockStatusUI();
                 renderTeam();
                 renderMarket();
             }
