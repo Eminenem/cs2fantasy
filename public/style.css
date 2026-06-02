@@ -23,6 +23,10 @@
    1. ПРЕМЬЕРНЫЙ МОБИЛЬНЫЙ И ДЕСКТОПНЫЙ ФОН: ГЕКСАГОНАЛЬНЫЕ ИСКАЖЕННЫЕ ГРАНИ
    ========================================================================= */
 
+/* =========================================================================
+   1. ПРЕМЬЕРНЫЙ ФОН: ИСКАЖЕННАЯ ГЕКСАГОНАЛЬНАЯ СЕТКА (OFFICIAL IEM COLOGNE)
+   ========================================================================= */
+
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -30,36 +34,45 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     position: relative;
-    /* 🔥 СДЕЛАНО ЯРЧЕ: Насыщенные золотисто-кремовые световые лучи по углам */
-    background-image: radial-gradient(circle at 10% 10%, rgba(197, 181, 159, 0.12) 0%, transparent 45%), radial-gradient(circle at 90% 90%, rgba(126, 132, 148, 0.1) 0%, transparent 50%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+    /* СВЕТОВЫЕ ЛУЧИ: Сделаны ярче и насыщеннее по углам инфографики */
+    background-image: radial-gradient(circle at 10% 15%, rgba(197, 181, 159, 0.16) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(126, 132, 148, 0.12) 0%, transparent 50%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
     background-attachment: fixed;
 }
 
-    /* 🔥 СДЕЛАНО: Кривая, трехмерная гексагональная сетка со «скачущей» толщиной линий */
+    /* 🔥 ИСПРАВЛЕНО: Математически точный, честный гексагональный узор (соты) */
     body::before {
         content: "";
         position: fixed;
-        top: -10%;
-        left: -10%;
-        width: 120%;
-        height: 120%;
+        top: -20%;
+        left: -20%;
+        width: 140%;
+        height: 140%;
         z-index: -1;
         pointer-events: none;
-        /* 🌟 СДЕЛАНО ЯРЧЕ: Увеличили прозрачность линий, чтобы узоры четко читались */
-        opacity: 0.38;
-        /* Базовый гексагональный узор с разной толщиной (разница шага градиентов) */
-        background-image: linear-gradient(30deg, transparent 49%, rgba(197, 181, 159, 0.4) 50%, transparent 51%), linear-gradient(-30deg, transparent 48.5%, rgba(197, 181, 159, 0.5) 50%, transparent 51.5%), linear-gradient(90deg, transparent 49.3%, rgba(126, 132, 148, 0.25) 50%, transparent 50.7%);
-        background-size: 140px 242px; /* Размер ячеек гексагональной сетки */
-        /* 🔥 ЭФФЕКТ ПРЕЛОМЛЕНИЯ И ИСКАЖЕНИЯ ГЕКСОВ (Кривим плоскость сетки) */
-        transform: perspective(800px) /* Создаем глубину собора */
-        rotateX(15deg) /* Наклоняем гексы вдаль */
-        rotateY(-5deg) /* Кривим влево для динамики инфографики */
-        scale(1.1); /* Слегка растягиваем для компенсации поворота */
+        opacity: 0.35; /* Яркая и четкая видимость граней */
+        /* Формула чистых гексов: комбинация угловых и прямых масок со смещением слоев */
+        background-image:
+        /* Вертикальные грани гексов со скачущей толщиной */
+        linear-gradient(90deg, rgba(197, 181, 159, 0.4) 0px, transparent 2px),
+        /* Скошенные грани под углом 60 градусов */
+        linear-gradient(60deg, transparent 48%, rgba(197, 181, 159, 0.5) 50%, transparent 52%), linear-gradient(-60deg, transparent 48%, rgba(126, 132, 148, 0.3) 50%, transparent 52%),
+        /* Дублирующие слои со смещением для замыкания шестиугольников */
+        linear-gradient(60deg, transparent 48%, rgba(197, 181, 159, 0.4) 50%, transparent 52%), linear-gradient(-60deg, transparent 48%, rgba(126, 132, 148, 0.25) 50%, transparent 52%);
+        /* Задаем строгий шаг сетки и сдвигаем слои относительно друг друга */
+        background-size: 100px 173.2px; /* 173.2px — это точный корень из 3 для идеальных пропорций сот */
+        background-position: 0 0, 0 0, 0 0, 50px 86.6px, 50px 86.6px; /* Физический сдвиг на половину ячейки, который и превращает ромбы в соты! */
+        /* 🔥 ЭФФЕКТ ПРЕЛОМЛЕНИЯ: Принудительно кривим и закручиваем гексы в 3D */
+        transform: perspective(1000px) /* Эффект перспективы и объема */
+        rotateX(18deg) /* Сильный наклон плоскости назад */
+        rotateY(-6deg) /* Искривление влево по оси инфографики */
+        skewX(-4deg) /* Дополнительный динамический сдвиг граней */
+        scale(1.15);
         transform-origin: center center;
-        /* Плавное затухание гексов по краям, чтобы сетка "растворялась" */
-        mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
-        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 95%);
+        /* Мягкое растворение узора по краям экрана */
+        mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+        -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
     }
+
 
 
 .container {
