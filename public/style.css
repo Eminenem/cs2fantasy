@@ -19,6 +19,10 @@
     padding: 0;
 }
 
+/* =========================================================================
+   1. ИСПРАВЛЕНО: ЖУРНАЛЬНЫЙ ФОН С ТУРНИРНЫМ ОРНАМЕНТОМ ESL ПО БОКАМ
+   ========================================================================= */
+
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -26,10 +30,11 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     position: relative;
-    background-image: radial-gradient(circle at 15% 20%, rgba(197, 181, 159, 0.04) 0%, transparent 35%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
+    background-image: radial-gradient(circle at 15% 20%, rgba(197, 181, 159, 0.05) 0%, transparent 35%), linear-gradient(180deg, #ffffff 0%, #f4f5f7 100%);
     background-attachment: fixed;
 }
 
+    /* Гексагональная/кристаллическая сетка на заднем плане */
     body::before {
         content: "";
         position: fixed;
@@ -42,7 +47,48 @@ body {
         pointer-events: none;
         background-image: linear-gradient(30deg, transparent 49.5%, rgba(197, 181, 159, 0.25) 50%, transparent 50.5%), linear-gradient(-30deg, transparent 49.5%, rgba(126, 132, 148, 0.12) 50%, transparent 50.5%);
         background-size: 160px 276px;
+        background-attachment: fixed;
     }
+
+    /* 🔥 НОВЫЙ БЛОК: Премиальный бежевый орнамент IEM Cologne strictly по бокам экрана */
+    body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Задний план, строго под контентом */
+        pointer-events: none;
+        opacity: 0.45; /* Сбалансированная яркость узора */
+        /* Рисуем строгие вертикальные линии и угловатые шевроны ESL */
+        background-image:
+        /* 1. Тонкие направляющие вертикальные полосы */
+        linear-gradient(90deg, rgba(197, 181, 159, 0.4) 1px, transparent 1px),
+        /* 2. Повторяющиеся угловатые готические шевроны (стрелы вверх) */
+        linear-gradient(45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%), linear-gradient(-45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%),
+        /* 3. Горизонтальные технологичные штрихи-засечки */
+        linear-gradient(0deg, rgba(197, 181, 159, 0.3) 1px, transparent 1px);
+        background-size: 100% 100%, /* Линии на всю высоту */
+        40px 40px, /* Размер шевронов левых */
+        40px 40px, /* Размер шевронов правых */
+        100% 80px; /* Шаг горизонтальных засечек */
+
+        background-position: 0 0, 0 0, 0 0, 0 0;
+        /* 🌟 ГЛАВНЫЙ СЕКРЕТ: Маска, которая полностью стирает узор в центре экрана (где сетка 1200px) 
+       и оставляет его видимым ТОЛЬКО на пустых полях справа и слева на ПК */
+        mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
+        -webkit-mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
+        background-attachment: fixed;
+    }
+
+/* Отключаем орнамент на мобильных телефонах, чтобы он не забивал интерфейс */
+@media (max-width: 1200px) {
+    body::after {
+        display: none !important;
+    }
+}
+
 
 .container {
     max-width: 1200px;
