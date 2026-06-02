@@ -113,15 +113,22 @@
     </style>
 </head>
 <body>
-    <div id="site-loader" style="background: radial-gradient(circle at center, #0e1322 0%, #07080d 100%); position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s;">
-        <div style="font-family: 'Oswald', 'Arial Black', sans-serif; font-weight: 800; font-size: 32px; color: #fff; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase;">
-            CS2 <span style="color: #ffff00;">FANTASY</span>
+    <!-- 🏆 ОФИЦИАЛЬНЫЙ СВЕТЛЫЙ ПРЕРОЛЛ ЗАГРУЗКИ IEM COLOGNE 2026 -->
+    <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f5f7; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s; background-image: radial-gradient(circle at center, #ffffff 0%, #f4f5f7 100%);">
+
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; background-image: linear-gradient(30deg, transparent 49.5%, #c5b59f 50%, transparent 50.5%), linear-gradient(-30deg, transparent 49.5%, #7e8494 50%, transparent 50.5%); background-size: 160px 276px; z-index: 1;"></div>
+
+        <div style="position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;">
+            <div style="font-family: 'Oswald', 'Arial Black', sans-serif; font-weight: 800; font-size: 30px; color: #111217; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; font-style: italic;">
+                IEM COLOGNE <span style="color: #c5b59f;">FANTASY</span>
+            </div>
+            <div style="width: 200px; height: 3px; background: rgba(18, 19, 24, 0.05); border-radius: 2px; overflow: hidden; position: relative; border: 1px solid rgba(18, 19, 24, 0.02);">
+                <div style="width: 70px; height: 100%; background: linear-gradient(90deg, #fbf7eb, #c5b59f); position: absolute; border-radius: 2px; animation: loadingBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 8px rgba(197, 181, 159, 0.4);"></div>
+            </div>
+            <p style="color: #7e8494; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 18px; font-weight: 700; font-family: 'Share Tech Mono', monospace;">Connecting to IEM registry database...</p>
         </div>
-        <div style="width: 220px; height: 2px; background: rgba(255,255,255,0.03); border-radius: 1px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.01);">
-            <div style="width: 70px; height: 100%; background: #ffff00; position: absolute; border-radius: 1px; animation: loadingBar 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);"></div>
-        </div>
-        <p style="color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 18px; font-weight: 700; font-family: sans-serif;">Connecting to tournament servers...</p>
     </div>
+
 
     <style>
         @keyframes loadingBar {
