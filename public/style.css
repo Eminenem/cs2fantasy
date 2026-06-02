@@ -1,11 +1,11 @@
 /* =========================================================================
-   1. ÏÅÐÅÌÅÍÍÛÅ, ÁÀÇÎÂÛÅ ÑÒÈËÈ È ÑÅÒÊÀ ÈÍÒÅÐÔÅÉÑÀ
+   1. ПЕРЕМЕННЫЕ, БАЗОВЫЕ СТИЛИ И СЕТКА ИНТЕРФЕЙСА
    ========================================================================= */
 
 :root {
     --color-bg: rgba(15, 15, 20, 1);
     --color-surface: rgba(25, 25, 30, 1);
-    --color-primary: #de9b35; /* Ôèðìåííûé îðàíæåâûé CS2 äëÿ àêöåíòîâ */
+    --color-primary: #de9b35; /* Фирменный оранжевый CS2 для акцентов */
     --color-text: rgba(225, 225, 245, 1);
     --color-text-muted: rgba(150, 150, 165, 1);
     --color-danger: rgba(255, 74, 74, 1);
@@ -23,7 +23,7 @@ body {
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.5;
-    overflow-x: hidden; /* Çàùèòà îò ãîðèçîíòàëüíîãî ñêðîëëà èç-çà ëåíòû */
+    overflow-x: hidden; /* Защита от горизонтального скролла из-за ленты */
 }
 
 .container {
@@ -32,7 +32,7 @@ body {
     padding: 0 20px;
 }
 
-/* Øàïêà ïðèëîæåíèÿ */
+/* Шапка приложения */
 .header {
     background-color: var(--color-surface);
     border-bottom: 1px solid rgba(225, 225, 245, 0.15);
@@ -76,7 +76,7 @@ body {
         color: var(--color-primary);
     }
 
-/* Ãëàâíûé êîíòåíò-áëîê */
+/* Главный контент-блок */
 .main {
     padding: 40px 0;
 }
@@ -95,7 +95,7 @@ body {
 }
 
 /* =========================================================================
-   2. ÑÒÈËÈ ÁÅÃÓÙÅÉ ÑÒÐÎÊÈ ÐÅÉÒÈÍÃÀ ÊÎÌÀÍÄ (HLTV TICKER)
+   2. СТИЛИ БЕГУЩЕЙ СТРОКИ РЕЙТИНГА КОМАНД (HLTV TICKER)
    ========================================================================= */
 
 .ticker-wrapper {
@@ -107,7 +107,7 @@ body {
     position: relative;
 }
 
-/* Ñòàòè÷íàÿ ïëàøêà-çàãîëîâîê ñëåâà */
+/* Статичная плашка-заголовок слева */
 .ticker__title {
     background: #000000;
     color: var(--color-primary);
@@ -123,22 +123,22 @@ body {
     white-space: nowrap;
 }
 
-/* Êîíòåéíåð äâèæóùåéñÿ ëåíòû */
+/* Контейнер движущейся ленты */
 .ticker {
     display: flex;
     align-items: center;
     white-space: nowrap;
     padding-left: 10px;
-    animation: tickerLoop 35s linear infinite; /* Áåñêîíå÷íûé öèêë ñäâèãà */
+    animation: tickerLoop 35s linear infinite; /* Бесконечный цикл сдвига */
 }
 
-    /* Ïàóçà áåãóùåé ñòðîêè ïðè íàâåäåíèè ìûøè */
+    /* Пауза бегущей строки при наведении мыши */
     .ticker:hover {
         animation-play-state: paused;
         cursor: pointer;
     }
 
-/* Ýëåìåíò êîìàíäû âíóòðè ëåíòû */
+/* Элемент команды внутри ленты */
 .ranking-item {
     display: inline-flex;
     align-items: center;
@@ -167,7 +167,7 @@ body {
     border-radius: 3px;
 }
 
-/* Àíèìàöèÿ áåñêîíå÷íîãî ñìåùåíèÿ ëåíòû */
+/* Анимация бесконечного смещения ленты */
 @keyframes tickerLoop {
     0% {
         transform: translate3d(0, 0, 0);
@@ -179,7 +179,7 @@ body {
 }
 
 /* =========================================================================
-   3. ÑÅÒÊÀ È ÀÐÕÈÒÅÊÒÓÐÀ ÐÎËÅÂÛÕ ÑËÎÒÎÂ ÊÎÌÀÍÄÛ
+   3. СЕТКА И АРХИТЕКТУРА РОЛЕВЫХ СЛОТОВ КОМАНДЫ
    ========================================================================= */
 
 .team-slots {
@@ -229,7 +229,7 @@ body {
 }
 
 /* =========================================================================
-   4. ÄÈÇÀÉÍ ÊÀÐÒÎ×ÅÊ Ñ ÔÎÍÎÂÛÌ ÈÃÐÎÊÎÌ È ËÎÃÎÒÈÏÎÌ-ÂÎÄßÍÛÌ ÇÍÀÊÎÌ
+   4. ДИЗАЙН КАРТОЧЕК С ФОНОВЫМ ИГРОКОМ И ЛОГОТИПОМ-ВОДЯНЫМ ЗНАКОМ
    ========================================================================= */
 
 .player-card {
@@ -255,7 +255,7 @@ body {
         border-color: rgba(225, 225, 245, 0.3);
     }
 
-/* Ôîòî èãðîêà íà âåñü çàäíèé ôîí */
+/* Фото игрока на весь задний фон */
 .player-card__bg-avatar {
     position: absolute;
     top: 0;
@@ -268,7 +268,7 @@ body {
     background: linear-gradient(to top, rgba(15, 15, 20, 0.95) 20%, rgba(15, 15, 20, 0) 60%);
 }
 
-/* Ñêîøåííàÿ íåïðÿìîóãîëüíàÿ èíôîðìàöèîííàÿ ïëàøêà */
+/* Скошенная непрямоугольная информационная плашка */
 .player-card__badge {
     position: relative;
     z-index: 2;
@@ -280,7 +280,7 @@ body {
     .player-card__badge::before {
         content: "";
         position: absolute;
-        top: -5px; /* Ñìåùåíèå, ÷òîáû êîìïåíñèðîâàòü íàêëîí */
+        top: -5px; /* Смещение, чтобы компенсировать наклон */
         left: 0px;
         right: 0;
         bottom: 0;
@@ -288,12 +288,12 @@ body {
         background: rgba(25, 25, 30, 0.95);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
-        /* Íàêëîíÿåì âåðõíþþ ãðàíü */
+        /* Наклоняем верхнюю грань */
         transform: skewY(-6deg);
         transform-origin: top right;
     }
 
-/* Îãðîìíûé ôîíîâûé ëîãîòèï-âîäÿíîé çíàê âíóòðè ïëàøêè */
+/* Огромный фоновый логотип-водяной знак внутри плашки */
 .player-card__bg-logo {
     position: absolute;
     bottom: -15px;
@@ -301,15 +301,15 @@ body {
     width: 150px;
     height: 150px;
     object-fit: contain;
-    z-index: -1; /* Ñïðÿòàí çà òåêñòîì è êíîïêàìè */
-    /* Ñïîêîéíîå ñîñòîÿíèå: ìîíîõðîìíûé âîäÿíîé çíàê */
+    z-index: -1; /* Спрятан за текстом и кнопками */
+    /* Спокойное состояние: монохромный водяной знак */
     filter: grayscale(1) brightness(0.8);
     opacity: 0.32;
     transform: rotate(-10deg);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ýôôåêò ïðè íàâåäåíèè: ëîãîòèï íàëèâàåòñÿ öâåòîì îðãàíèçàöèè è âûåçæàåò */
+/* Эффект при наведении: логотип наливается цветом организации и выезжает */
 .player-card:hover .player-card__bg-logo {
     opacity: 0.65;
     filter: grayscale(0) brightness(1);
@@ -334,7 +334,7 @@ body {
     font-weight: 600;
 }
 
-/* Ñêîøåííûé òåã ðîëè èãðîêà */
+/* Скошенный тег роли игрока */
 .player-card__role-tag {
     background: rgba(0, 0, 0, 0.25);
     color: rgba(255, 255, 255, 0.85);
@@ -346,7 +346,7 @@ body {
     clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
 }
 
-/* ÌÀÑÑÈÂÍÛÉ ÕÐÎÌÈÐÎÂÀÍÍÛÉ RATING 3.0 Ñ ÊÓÐÑÈÂÎÌ ÂÍÓÒÐÈ ÏËÀØÊÈ */
+/* МАССИВНЫЙ ХРОМИРОВАННЫЙ RATING 3.0 С КУРСИВОМ ВНУТРИ ПЛАШКИ */
 .player-card__badge-rating {
     display: flex;
     align-items: flex-end;
@@ -358,7 +358,7 @@ body {
     font-style: italic;
     font-weight: 900;
     letter-spacing: 1px;
-    /* Íàëîæåíèå ñëîæíîãî õðîìèðîâàííîãî ãðàäèåíòà íà øðèôò */
+    /* Наложение сложного хромированного градиента на шрифт */
     background: linear-gradient(135deg, #ffffff 0%, #b5bdc8 30%, #828c95 50%, #ffffff 70%, #757f9a 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -366,7 +366,7 @@ body {
 }
 
     .player-card__badge-rating span {
-        font-size: 26px; /* Êðóïíîå ÷èñëî ðåéòèíãà */
+        font-size: 26px; /* Крупное число рейтинга */
         line-height: 0.9;
         font-weight: 900;
         letter-spacing: -1px;
@@ -375,7 +375,7 @@ body {
     }
 
 /* =========================================================================
-   5. ÂÈÇÓÀËÜÍÎÅ ÑÂÅ×ÅÍÈÅ È ÇÎËÎÒÛÅ ÑÒÈËÈ ÄËß ÇÂÅÇÄÍÎÃÎ ÈÃÐÎÊÀ
+   5. ВИЗУАЛЬНОЕ СВЕЧЕНИЕ И ЗОЛОТЫЕ СТИЛИ ДЛЯ ЗВЕЗДНОГО ИГРОКА
    ========================================================================= */
 
 .player-card--star {
@@ -383,7 +383,7 @@ body {
     box-shadow: 0 0 25px rgba(222, 155, 53, 0.65);
 }
 
-    /* Èçìåíåíèå ïëàøêè Çâåçäíîãî èãðîêà íà çîëîòî */
+    /* Изменение плашки Звездного игрока на золото */
     .player-card--star .player-card__badge::before {
     background: linear-gradient(135deg, rgba(255, 195, 153, 0.65) 0%, rgba(222, 155, 73, 0.6) 100%);
 }
@@ -401,7 +401,7 @@ body {
         color: #fff;
     }
 
-    /* Ìàòîâûé ãðàôèòîâûé ìåòàëë äëÿ ðåéòèíãà íà çîëîòîé êàðòå */
+    /* Матовый графитовый металл для рейтинга на золотой карте */
     .player-card--star .player-card__badge-rating {
         background: rgba(0, 0, 0, 0.08);
         border-left-color: rgba(0, 0, 0, 0.8);
@@ -409,7 +409,7 @@ body {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    /* Êàñòîìèçàöèÿ ôîíîâîãî ëîãîòèïà-âîäÿíîãî çíàêà íà çîëîòîé êàðòå */
+    /* Кастомизация фонового логотипа-водяного знака на золотой карте */
     .player-card--star .player-card__bg-logo {
         filter: grayscale(1) brightness(0);
         opacity: 0.08;
@@ -419,7 +419,7 @@ body {
         filter: grayscale(0.2) brightness(0.9);
         opacity: 0.3;
     }
-/* Ñåëåêòîð Çâåçäû (ðàäèî-êíîïêà) */
+/* Селектор Звезды (радио-кнопка) */
 .star-toggle-container {
     margin-bottom: 12px;
     background: rgba(0, 0, 0, 0.25);
@@ -451,7 +451,7 @@ body {
     cursor: pointer;
     accent-color: var(--color-primary);
 }
-/* Ñêîøåííûé çåëåíûé òåã áîíóñà çà ðîëü */
+/* Скошенный зеленый тег бонуса за роль */
 .bonus-tag {
     position: absolute;
     top: 12px;
@@ -468,7 +468,7 @@ body {
     clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
 /* =========================================================================
-6. ÐÛÍÎ×ÍÀß ÑÅÒÊÀ È ÊÍÎÏÊÈ ÓÏÐÀÂËÅÍÈß ÒÐÀÍÑÔÅÐÀÌÈ
+6. РЫНОЧНАЯ СЕТКА И КНОПКИ УПРАВЛЕНИЯ ТРАНСФЕРАМИ
 ========================================================================= */
 .market-grid {
     display: grid;
@@ -486,8 +486,9 @@ body {
     width: 100%;
     text-transform: uppercase;
     font-size: 13px;
+    text-align: center;
 }
-/* Ãëàâíàÿ êíîïêà ñèìóëÿöèè */
+/* Главная кнопка симуляции */
 .btn--primary {
     background-color: var(--color-surface);
     color: var(--color-text);
@@ -508,7 +509,7 @@ body {
         cursor: not-allowed;
         opacity: 0.5;
     }
-/* Êíîïêà ïîêóïêè íà ðûíêå */
+/* Кнопка покупки на рынке */
 .btn--buy {
     background-color: rgba(0, 0, 0, 0.25);
     color: var(--color-text);
@@ -528,7 +529,7 @@ body {
         border-color: rgba(255, 255, 255, 0.05);
         color: var(--color-text-muted);
     }
-/* Êíîïêà óäàëåíèÿ */
+/* Кнопка удаления */
 .btn--remove {
     background-color: rgba(255, 74, 74, 0.1);
     color: var(--color-danger);
@@ -589,14 +590,19 @@ body {
 
     /* 🔥 Перестраиваем слоты команды: на телефонах они идут по 2 в ряд */
     .team-slots {
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-wrap: wrap;    
         gap: 12px;
+        justify-content: center;
     }
 
     /* 🔥 Рынок игроков: тоже по 2 карточки в ряд, чтобы не растягивать экран */
     .market-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
     }
 
     /* Ужимаем пропорции карточек для мобильных экранов */
@@ -604,6 +610,8 @@ body {
         aspect-ratio: auto;
         height: 290px;
         min-height: 290px;
+        width: calc(50% - 6px);
+        box-sizing: border-box;
     }
 
     .player-card__badge {
@@ -626,9 +634,9 @@ body {
         margin-bottom: 8px;
     }
 
-    .player-card__badge-rating span {
-        font-size: 18px;
-    }
+        .player-card__badge-rating span {
+            font-size: 18px;
+        }
 
     .star-toggle-container {
         padding: 4px;
@@ -653,10 +661,12 @@ body {
     .ticker-wrapper {
         height: 34px;
     }
+
     .ticker__title {
         font-size: 11px;
         padding: 0 10px;
     }
+
     .ranking-item {
         padding: 0 10px;
         font-size: 11px;
