@@ -370,3 +370,26 @@ function startDeadlineCountdown(deadlineString) {
 
 // Запуск приложения
 init();
+
+// Логика сворачивания и разворачивания мобильной шапки
+document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("toggle-stats-btn");
+    const statsWrapper = document.getElementById("mobile-stats-wrapper");
+
+    if (toggleBtn && statsWrapper) {
+        toggleBtn.addEventListener("click", () => {
+            // Переключаем класс collapsed у обертки плашек
+            statsWrapper.classList.toggle("collapsed");
+
+            // Меняем стрелочку в зависимости от состояния
+            if (statsWrapper.classList.contains("collapsed")) {
+                toggleBtn.textContent = "▼";
+                toggleBtn.style.color = "var(--color-text-muted)";
+            } else {
+                toggleBtn.textContent = "▲";
+                toggleBtn.style.color = "var(--color-primary)";
+            }
+        });
+    }
+});
+
