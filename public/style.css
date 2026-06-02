@@ -206,6 +206,9 @@ body {
         border-color: transparent var(--color-surface-dark) transparent transparent;
     }
 
+/* =========================================================================
+   ИСПРАВЛЕНО ДЛЯ ПК: СТРОГИЕ ГОРИЗОНТАЛЬНЫЕ ЗАГОРОВКИ РАЗДЕЛОВ
+   ========================================================================= */
 .section-title {
     font-family: 'Oswald', sans-serif;
     font-weight: 800;
@@ -214,17 +217,23 @@ body {
     letter-spacing: 0.5px;
     color: var(--color-surface-dark);
     margin-bottom: 25px;
-    display: flex;
-    flex-direction: column;
+    /* 🔥 ИСПРАВЛЕНО ДЛЯ ПК: выстраиваем слова и счетчики строго в одну горизонтальную линию */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important; /* Отступ между золотым словом и остальным текстом */
+    white-space: nowrap !important;
 }
 
+    /* Первое слово (внутри тега span) красится в благородное бежевое золото */
     .section-title span {
-        color: var(--color-primary);
-        /* 🔥 ИСПРАВЛЕНО: display: inline запрещает браузеру рвать строку и переносить цифры счетчика */
-        display: inline !important;
-        margin-right: 4px;
+        color: var(--color-primary) !important;
+        display: inline !important; /* Убран block/inline-block, ломавший строку */
+        margin: 0 !important;
     }
 
+    /* Мелкий моноширинный подзаголовок аккуратно прижимается к правому краю */
     .section-title::after {
         content: "Tier-1 Events of the season";
         font-family: 'Share Tech Mono', monospace;
@@ -232,13 +241,15 @@ body {
         color: var(--color-text-muted);
         text-transform: none;
         letter-spacing: 1px;
-        margin-top: 2px;
         font-weight: 400;
+        margin-left: 20px; /* Отодвигаем подзаголовок вправо от основного текста */
+        display: inline-block !important;
     }
 
 .market .section-title::after {
     content: "Available professional players registry";
 }
+
 
 .team-slots, .market-grid {
     display: grid !important;
@@ -529,11 +540,21 @@ body {
     }
 
     .section-title {
-        font-size: 16px !important; /* Немного ужимаем размер, чтобы заголовок гарантированно влезал в экран любого телефона */
-        white-space: nowrap !important; /* Железный запрет на перенос слов на новую строчку */
-        flex-direction: row !important; /* Выстраиваем слова строго слева направо */
-        display: block !important; /* Возвращаем стандартное текстовое отображение */
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* Запрещает элементам внутри флекса переноситься */
+        align-items: center !important;
+        justify-content: flex-start !important;
+        font-size: 15px !important; /* Компактный размер для 100% совместимости с экранами телефонов */
+        white-space: nowrap !important; /* Железный запрет на перенос слов */
+        width: 100% !important;
+        overflow: visible !important;
     }
+
+        /* Дополнительно зажимаем подзаголовок, чтобы он на мобильных не растягивал title */
+        .section-title::after {
+            display: none !important; /* Скрываем мелкий технический текст подзаголовка на смартфонах, чтобы освободить место */
+        }
 
     /* Флекс-контейнер для мобильных сеток */
     .team-slots, .market-grid {
