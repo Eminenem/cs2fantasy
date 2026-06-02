@@ -52,7 +52,7 @@ async function init() {
                 state.score = data.data.score || 0;
                 state.isLocked = data.data.isLocked || false;
 
-                // Восстановление состава из базы, если он зафиксирован
+                // Восстановление состава
                 if (data.data.currentTeam && data.data.currentTeam.length > 0) {
                     data.data.currentTeam.forEach((id, idx) => {
                         const foundPlayer = PLAYERS.find(p => p.id === id);
@@ -64,6 +64,14 @@ async function init() {
                         const starIdx = data.data.currentTeam.indexOf(data.data.starPlayerId);
                         if (starIdx !== -1) state.starPlayerIndex = starIdx;
                     }
+                }
+
+                // 🔥 ЗАПУСК АВТОМАТИЧЕСКОГО ТАЙМЕРА ДЕДЛАЙНА
+                if (data.data.deadline) {
+                    startDeadlineCountdown(data.data.deadline);
+                } else {
+                    const timerEl = document.getElementById('countdown-timer');
+                    if (timerEl) timerEl.textContent = "Время не установлено";
                 }
             }
         } catch (err) {
@@ -313,6 +321,51 @@ function loadHLTVTeamRankings() {
 
     localTeams.forEach((team, index) => rankingContainer.appendChild(createCard(team, index)));
     localTeams.forEach((team, index) => rankingContainer.appendChild(createCard(team, index)));
+}
+
+function startDeadlineCountdown(deadlineString) {
+    const timerEl = document.getElementById('countdown-timer');
+    if (!timerEl) return;
+
+    const deadlineDate = new Date(deadlineString);
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = deadlineDate - now;
+
+        // Если время вышло
+        if (diff <= 0) {
+            timerEl.textContent = "ТРАНСФЕРЫ ЗАКРЫТЫ 🛑";
+            timerEl.style.color = "var(--color-danger)";
+            timerEl.style.background = "rgba(255, 74, 74, 0.1)";
+
+            // Если сайт еще не был заблокирован, принудительно блокируем интерфейс
+            if (!state.isLocked) {
+                state.isLocked = true;
+                updateLockStatusUI();
+                renderTeam();
+                renderMarket();
+            }
+            clearInterval(timerInterval);
+            return;
+        }
+
+        // Вычисляем часы, минуты и секунды
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Красивое форматирование двузначных чисел (01:05:09)
+        const fH = hours.toString().padStart(2, '0');
+        const fM = minutes.toString().padStart(2, '0');
+        const fS = seconds.toString().padStart(2, '0');
+
+        timerEl.textContent = `⏳ ДО СТАРТА: ${fH}:${fM}:${fS}`;
+    }
+
+    // Запускаем ежесекундный интервал
+    updateTimer();
+    const timerInterval = setInterval(updateTimer, 1000);
 }
 
 // Запуск приложения
