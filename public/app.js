@@ -29,12 +29,13 @@ let state = {
     isLocked: false
 };
 
+state.userHistory = [];
+
 const marketGrid = document.getElementById('market-grid');
 const teamSlotsContainer = document.getElementById('team-slots');
 const scoreEl = document.getElementById('score');
 const teamCountEl = document.getElementById('team-count');
 
-// Главная функция инициализации приложения
 async function init() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -49,14 +50,13 @@ async function init() {
             if (data && data.success) {
                 state.score = data.data.score || 0;
                 state.isLocked = data.data.isLocked || false;
+                state.userHistory = data.data.history || [];
 
-                // 🔥 НОВОЕ: Выводим реальный никнейм на экран
                 const usernameEl = document.getElementById('current-username');
                 if (usernameEl) {
                     usernameEl.textContent = data.data.username || "Player";
                 }
 
-                // Восстановление состава
                 if (data.data.currentTeam && data.data.currentTeam.length > 0) {
                     data.data.currentTeam.forEach((id, idx) => {
                         const foundPlayer = PLAYERS.find(p => p.id === id);
@@ -70,7 +70,6 @@ async function init() {
                     }
                 }
 
-                // 🔥 ЗАПУСК АВТОМАТИЧЕСКОГО ТАЙМЕРА ДЕДЛАЙНА
                 if (data.data.deadline) {
                     startDeadlineCountdown(data.data.deadline);
                 } else {
@@ -98,12 +97,10 @@ async function init() {
 }
 
 
-// Функция подсчета лимита игроков из одного реального клуба
 function getTeamCountInFantasy(teamName) {
     return state.myTeam.filter(slot => slot.player && slot.player.team === teamName).length;
 }
 
-// Рендеринг витрины доступных игроков на рынке
 function renderMarket() {
     if (!marketGrid) return;
     marketGrid.innerHTML = '';
@@ -116,7 +113,6 @@ function renderMarket() {
         let btnText = 'В команду';
         let disabledAttr = '';
 
-        // Если состав заблокирован, отключаем весь рынок трансферов
         if (state.isLocked) {
             disabledAttr = 'disabled';
         } else if (isBought) {
@@ -143,7 +139,6 @@ function renderMarket() {
     });
 }
 
-// Рендеринг 5 слотов вашей активной сборной
 function renderTeam() {
     if (!teamSlotsContainer) return;
     teamSlotsContainer.innerHTML = '';
@@ -191,7 +186,7 @@ window.buyPlayer = function (id) {
     if (!player) return;
 
     if (getTeamCountInFantasy(player.team) >= 2) {
-        alert("Нельзя брать больше 2 игроков из организации " + player.team + "!");
+        alert("Нельзя брать больше 2 игроков из команды " + player.team + "!");
         return;
     }
 
@@ -214,7 +209,7 @@ window.removePlayer = function (index) {
         if (state.starPlayerIndex === index) state.starPlayerIndex = null;
         renderTeam();
         renderMarket();
-        autoSaveTeamToServer(); // 🔥 Автосохранение в облако
+        autoSaveTeamToServer(); 
     }
 };
 
@@ -222,12 +217,11 @@ window.setStarPlayer = function (index) {
     if (state.isLocked) return;
     state.starPlayerIndex = index;
     renderTeam();
-    autoSaveTeamToServer(); // 🔥 Автосохранение в облако
+    autoSaveTeamToServer();
 };
 
-// Функция автоматического сохранения состава в облако при любых изменениях
 function autoSaveTeamToServer() {
-    if (state.isLocked) return; // Если дедлайн прошел, сохранение заблокировано
+    if (state.isLocked) return;
 
     const teamIds = state.myTeam.map(slot => slot.player ? slot.player.id : null);
     const starPlayerId = state.myTeam[state.starPlayerIndex]?.player?.id || null;
@@ -235,7 +229,6 @@ function autoSaveTeamToServer() {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    // Отправляем текущее состояние состава на бэкенд
     fetch('/api/lock-team', {
         method: 'POST',
         headers: {
@@ -253,7 +246,6 @@ function autoSaveTeamToServer() {
         .catch(err => console.error("Ошибка автосохранения состава:", err));
 }
 
-// Автоисправление картинок
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("error", (e) => {
         if (e.target.tagName === "IMG" && e.target.classList.contains("player-card__bg-avatar")) {
@@ -263,7 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, true);
 });
 
-// Автономный вывод бегущей строки (с бесшовным дублированием массива)
 function loadHLTVTeamRankings() {
     const rankingContainer = document.getElementById('ranking-list');
     if (!rankingContainer) return;
@@ -319,38 +310,30 @@ function startDeadlineCountdown(deadlineString) {
             return;
         }
 
-        // Вычисляем часы, минуты и секунды
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Красивое форматирование двузначных чисел (01:05:09)
         const fH = hours.toString().padStart(2, '0');
         const fM = minutes.toString().padStart(2, '0');
         const fS = seconds.toString().padStart(2, '0');
 
         timerEl.textContent = `ДО СТАРТА: ${fH}:${fM}:${fS}`;
     }
-
-    // Запускаем ежесекундный интервал
     updateTimer();
     const timerInterval = setInterval(updateTimer, 1000);
 }
 
-// Запуск приложения
 init();
 
-// Логика сворачивания и разворачивания мобильной шапки
 document.addEventListener("DOMContentLoaded", () => {
     const toggleBtn = document.getElementById("toggle-stats-btn");
     const statsWrapper = document.getElementById("mobile-stats-wrapper");
 
     if (toggleBtn && statsWrapper) {
         toggleBtn.addEventListener("click", () => {
-            // Переключаем класс collapsed у обертки плашек
             statsWrapper.classList.toggle("collapsed");
 
-            // Меняем стрелочку в зависимости от состояния
             if (statsWrapper.classList.contains("collapsed")) {
                 toggleBtn.textContent = "▼";
                 toggleBtn.style.color = "var(--color-text-muted)";
@@ -363,8 +346,51 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.logout = function () {
-    if (confirm("Вы действительно хотите выйти из своего фэнтези-аккаунта?")) {
-        localStorage.removeItem('token'); // Стираем ключ авторизации из памяти браузера
-        window.location.href = '/login.html'; // Принудительно отправляем на форму входа
+    if (confirm("Вы действительно хотите выйти из своего аккаунта?")) {
+        localStorage.removeItem('token');
+        window.location.href = '/login.html';
     }
+};
+
+window.openHistoryModal = function () {
+    const modal = document.getElementById('history-modal');
+    const content = document.getElementById('history-content');
+    if (!modal || !content) return;
+
+    modal.style.display = 'flex';
+    content.innerHTML = '';
+
+    if (!state.userHistory || state.userHistory.length === 0) {
+        content.innerHTML = `<p style="text-align: center; color: var(--color-text-muted); padding: 20px;">Вы еще не участвовали ни в одном туре. Ваша история появится здесь после официального закрытия текущего тура.</p>`;
+        return;
+    }
+
+    state.userHistory.forEach(tourData => {
+        const tourBlock = document.createElement('div');
+        tourBlock style = "margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed rgba(18,19,24,0.1);";
+
+        let playersNames = [];
+        tourData.team.forEach(id => {
+            const player = PLAYERS.find(p => p.id === id);
+            if (player) {
+                const isStar = tourData.starPlayerId === id;
+                playersNames.push(`${player.name} ${isStar ? '⭐' : ''} (${player.team})`);
+            }
+        });
+
+        tourBlock.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-family: 'Oswald', sans-serif; font-weight: 800; text-transform: uppercase; color: #111217; font-size: 16px;">ТУР №${tourData.tour}</span>
+            </div>
+            <div style="font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #444; background: #f4f5f7; padding: 10px; border-radius: 4px; line-height: 1.6;">
+                ${playersNames.join('<br>')}
+            </div>
+        `;
+        content.appendChild(tourBlock);
+    });
+};
+
+window.closeHistoryModal = function () {
+    const modal = document.getElementById('history-modal');
+    if (modal) modal.style.display = 'none';
 };
