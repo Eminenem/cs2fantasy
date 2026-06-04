@@ -73,17 +73,14 @@ const authenticateFirebaseToken = async (req, res, next) => {
 app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
     try {
         const userDoc = await db.collection('users').doc(req.user.uid).get();
-
-        // Получаем глобальные настройки турнира (время закрытия) из специального документа config
         const configDoc = await db.collection('settings').doc('tournament').get();
         let deadline = null;
         if (configDoc.exists) {
-            deadline = configDoc.data().deadline; // Дата-время в формате строки (например, "2026-06-06T18:00")
+            deadline = configDoc.data().deadline;
         }
 
-        // Если в конфиге время прошло, принудительно считаем, что состав заблокирован
         let isLocked = false;
-        let userData = { score: 0, currentTeam: [], starPlayerId: null };
+        let userData = { score: 0, currentTeam: [], starPlayerId: null, username: 'Player' };
 
         if (userDoc.exists) {
             userData = userDoc.data();
@@ -91,17 +88,19 @@ app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
         }
 
         if (deadline && new Date() > new Date(deadline)) {
-            isLocked = true; // 🔥 Железная блокировка на сервере, если время вышло!
+            isLocked = true;
         }
 
         res.json({
             success: true,
             data: {
+                username: userData.username || req.user.email.split('@')[0], // Защита: если никнейма нет, берем часть почты
+                email: userData.email || req.user.email,
                 score: userData.score || 0,
                 isLocked: isLocked,
                 currentTeam: userData.currentTeam || [],
                 starPlayerId: userData.starPlayerId || null,
-                deadline: deadline // отдаем фронтенду время для таймера
+                deadline: deadline
             }
         });
     } catch (err) {
@@ -113,10 +112,19 @@ app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
 // Создание базового профиля при первой авторизации
 app.post('/api/create-profile', authenticateFirebaseToken, async (req, res) => {
     try {
+        const { username } = req.body; // Забираем никнейм из тела запроса
         const userRef = db.collection('users').doc(req.user.uid);
         const doc = await userRef.get();
+
         if (!doc.exists) {
-            await userRef.set({ email: req.user.email, score: 0, isLocked: false, currentTeam: [], starPlayerId: null });
+            await userRef.set({
+                email: req.user.email,
+                username: username || req.user.email.split('@')[0], // сохраняем никнейм
+                score: 0,
+                isLocked: false,
+                currentTeam: [],
+                starPlayerId: null
+            });
         }
         res.json({ success: true });
     } catch (err) {
@@ -205,7 +213,8 @@ app.get('/api/leaderboard', async (req, res) => {
         const users = [];
         snapshot.forEach(doc => {
             const data = doc.data();
-            users.push({ email: data.email, score: data.score });
+            // 🔒 Публикуем в общий доступ исключительно никнейм (username)
+            users.push({ username: data.username || 'Anonymous', score: data.score || 0 });
         });
         res.json({ success: true, users });
     } catch (err) {
