@@ -162,6 +162,27 @@ body {
         color: var(--color-primary);
         margin-left: 4px;
     }
+.stats-bar__item_none {
+    /* Полупрозрачный матовый темный фон */
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--color-primary) !important;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+    .stats-bar__item span {
+        color: var(--color-primary);
+        margin-left: 4px;
+    }
+
 
 .ticker-wrapper {
     background-color: var(--color-surface);
