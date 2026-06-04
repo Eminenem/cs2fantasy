@@ -168,6 +168,8 @@
 
         <!-- ФОРМА РЕГИСТРАЦИИ -->
         <form id="register-form" class="auth-form">
+            <!-- 🔥 НОВОЕ: Поле для ввода публичного никнейма -->
+            <div class="input-group"><input type="text" id="reg-username" placeholder="Придумайте Никнейм (публичный)" required maxlength="20"></div>
             <div class="input-group"><input type="email" id="reg-email" placeholder="Введите ваш Email" required></div>
             <div class="input-group"><input type="password" id="reg-password" placeholder="Пароль (минимум 6 символов)" required></div>
             <div class="input-group"><input type="password" id="reg-password-confirm" placeholder="Повторите пароль" required></div>
@@ -257,26 +259,24 @@
             }
 
             try {
+                const username = document.getElementById('reg-username').value.trim(); // Читаем никнейм
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // 1. Отправляем письмо верификации от Google
                 await sendEmailVerification(user);
 
-                // 2. Оповещаем бэкенд о создании профиля в Firestore
                 const token = await user.getIdToken();
+                // 🔥 Передаем введенный никнейм на бэкенд при создании профиля
                 await fetch('/api/create-profile', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
-                    }
+                    },
+                    body: JSON.stringify({ username }) // отправляем никнейм в JSON
                 });
 
-                // Сразу вылогиниваем, пока не подтвердит почту
                 auth.signOut();
-
-                // Показываем плашку уведомления
                 switchTab('login');
                 verifyBox.style.display = 'block';
                 verifyBox.innerHTML = `📥 На адрес <b>${email}</b> отправлено письмо подтверждения. Перейдите по ссылке в письме, а затем войдите в аккаунт!`;
