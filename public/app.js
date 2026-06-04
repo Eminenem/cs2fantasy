@@ -367,7 +367,7 @@ window.openHistoryModal = function () {
 
     state.userHistory.forEach(tourData => {
         const tourBlock = document.createElement('div');
-        tourBlock style = "margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed rgba(18,19,24,0.1);";
+        tourBlock.style = "margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed rgba(18,19,24,0.1);";
 
         let playersNames = [];
         tourData.team.forEach(id => {
