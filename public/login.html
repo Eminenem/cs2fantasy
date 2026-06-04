@@ -269,7 +269,7 @@
                 switchTab('login');
                 verifyBox.style.display = 'block';
                 verifyBox.style.color = 'white';
-                verifyBox.innerHTML = `На адрес <b>${email}</b> отправлено письмо подтверждения. Перейдите по ссылке в письме, а затем войдите в аккаунт!`;
+                verifyBox.innerHTML = `На адрес <b>${email}</b> отправлено письмо подтверждения (Проверьте спам). Перейдите по ссылке в письме, а затем войдите в аккаунт!`;
 
             } catch (error) {
                 alert("Ошибка регистрации: " + error.message);
