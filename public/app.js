@@ -50,6 +50,12 @@ async function init() {
                 state.score = data.data.score || 0;
                 state.isLocked = data.data.isLocked || false;
 
+                // 🔥 НОВОЕ: Выводим реальный никнейм на экран
+                const usernameEl = document.getElementById('current-username');
+                if (usernameEl) {
+                    usernameEl.textContent = data.data.username || "Player";
+                }
+
                 // Восстановление состава
                 if (data.data.currentTeam && data.data.currentTeam.length > 0) {
                     data.data.currentTeam.forEach((id, idx) => {
@@ -355,3 +361,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+window.logout = function () {
+    if (confirm("Вы действительно хотите выйти из своего фэнтези-аккаунта?")) {
+        localStorage.removeItem('token'); // Стираем ключ авторизации из памяти браузера
+        window.location.href = '/login.html'; // Принудительно отправляем на форму входа
+    }
+};
