@@ -19,10 +19,6 @@
     padding: 0;
 }
 
-/* =========================================================================
-   1. ИСПРАВЛЕНО: ЖУРНАЛЬНЫЙ ФОН С ТУРНИРНЫМ ОРНАМЕНТОМ ESL ПО БОКАМ
-   ========================================================================= */
-
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -34,7 +30,6 @@ body {
     background-attachment: fixed;
 }
 
-    /* Гексагональная/кристаллическая сетка на заднем плане */
     body::before {
         content: "";
         position: fixed;
@@ -49,8 +44,6 @@ body {
         background-size: 160px 276px;
         background-attachment: fixed;
     }
-
-    /* 🔥 НОВЫЙ БЛОК: Премиальный бежевый орнамент IEM Cologne strictly по бокам экрана */
     body::after {
         content: "";
         position: fixed;
@@ -58,31 +51,24 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* Задний план, строго под контентом */
+        z-index: -1;
         pointer-events: none;
-        opacity: 0.45; /* Сбалансированная яркость узора */
-        /* Рисуем строгие вертикальные линии и угловатые шевроны ESL */
+        opacity: 0.45;
         background-image:
-        /* 1. Тонкие направляющие вертикальные полосы */
         linear-gradient(90deg, rgba(197, 181, 159, 0.4) 1px, transparent 1px),
-        /* 2. Повторяющиеся угловатые готические шевроны (стрелы вверх) */
         linear-gradient(45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%), linear-gradient(-45deg, rgba(197, 181, 159, 0.15) 25%, transparent 25%),
-        /* 3. Горизонтальные технологичные штрихи-засечки */
         linear-gradient(0deg, rgba(197, 181, 159, 0.3) 1px, transparent 1px);
-        background-size: 100% 100%, /* Линии на всю высоту */
-        40px 40px, /* Размер шевронов левых */
-        40px 40px, /* Размер шевронов правых */
-        100% 80px; /* Шаг горизонтальных засечек */
+        background-size: 100% 100%,
+        40px 40px,
+        40px 40px,
+        100% 80px;
 
         background-position: 0 0, 0 0, 0 0, 0 0;
-        /* 🌟 ГЛАВНЫЙ СЕКРЕТ: Маска, которая полностью стирает узор в центре экрана (где сетка 1200px) 
-       и оставляет его видимым ТОЛЬКО на пустых полях справа и слева на ПК */
         mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
         -webkit-mask-image: linear-gradient(90deg, black 0%, black 8%, transparent 12%, transparent 88%, black 92%, black 100%);
         background-attachment: fixed;
     }
 
-/* Отключаем орнамент на мобильных телефонах, чтобы он не забивал интерфейс */
 @media (max-width: 1200px) {
     body::after {
         display: none !important;
@@ -98,8 +84,7 @@ body {
 }
 
 .header {
-    background-color: var(--color-surface-dark) !important; /* Глубокий монолитный черный */
-    /* Тонкая, изящная золотая линия снизу, отделяющая шапку от сайта */
+    background-color: var(--color-surface-dark) !important;
     border-bottom: 2px solid var(--color-primary) !important;
     padding: 12px 0 !important;
     position: sticky;
@@ -121,12 +106,12 @@ body {
     font-size: 22px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: var(--color-text-light) !important; /* Контрастный белый текст */
+    color: var(--color-text-light) !important;
     white-space: nowrap;
 }
 
     .header__title span {
-        color: var(--color-primary) !important; /* Фирменное бежевое золото */
+        color: var(--color-primary) !important;
     }
 
 .stats-bar {
@@ -135,7 +120,6 @@ body {
 }
 
 .stats-bar__item {
-    /* Полупрозрачный матовый темный фон */
     background: rgba(255, 255, 255, 0.05) !important;
     color: var(--color-primary) !important;
     padding: 8px 16px;
@@ -153,7 +137,6 @@ body {
     box-shadow: 6px 0 15px rgba(0, 0, 0, 0.3) !important;
 }
 
-    /* Эффект наведения для плашки-кнопки "Таблица лидеров" */
     .stats-bar__item:hover {
         background: rgba(255, 255, 255, 0.09) !important;
     }
@@ -163,7 +146,6 @@ body {
         margin-left: 4px;
     }
 .stats-bar__item_none {
-    /* Полупрозрачный матовый темный фон */
     background: rgba(255, 255, 255, 0) !important;
     color: var(--color-primary) !important;
     padding: 8px 16px;
@@ -194,8 +176,8 @@ body {
 }
 
 .ticker__title {
-    background-color: var(--color-surface-dark) !important; /* Идентичный глубокий черный */
-    color: var(--color-primary) !important; /* Золотые буквы Кёльна */
+    background-color: var(--color-surface-dark) !important;
+    color: var(--color-primary) !important;
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     font-size: 11px;
@@ -204,7 +186,6 @@ body {
     align-items: center;
     padding: 0 18px;
     z-index: 10;
-    /* Тонкая правая золотая граница, отделяющая заголовок от движущейся ленты */
     border-right: 2px solid var(--color-primary) !important;
     box-shadow: 6px 0 15px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
@@ -285,9 +266,6 @@ body {
         border-color: transparent var(--color-surface-dark) transparent transparent;
     }
 
-/* =========================================================================
-   ИСПРАВЛЕНО ДЛЯ ПК: СТРОГИЕ ГОРИЗОНТАЛЬНЫЕ ЗАГОРОВКИ РАЗДЕЛОВ
-   ========================================================================= */
 .section-title {
     font-family: 'Oswald', sans-serif;
     font-weight: 800;
@@ -296,19 +274,17 @@ body {
     letter-spacing: 0.5px;
     color: var(--color-surface-dark);
     margin-bottom: 25px;
-    /* 🔥 ИСПРАВЛЕНО ДЛЯ ПК: выстраиваем слова и счетчики строго в одну горизонтальную линию */
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 6px !important; /* Отступ между золотым словом и остальным текстом */
+    gap: 6px !important;
     white-space: nowrap !important;
 }
 
-    /* Первое слово (внутри тега span) красится в благородное бежевое золото */
     .section-title span {
         color: var(--color-primary) !important;
-        display: inline !important; /* Убран block/inline-block, ломавший строку */
+        display: inline !important;
         margin: 0 !important;
     }
 
@@ -361,10 +337,10 @@ body {
     padding: 15px;
     padding-top: 35px;
 }
-/* 🌟 ИСПРАВЛЕНО: Карточки получили четкие рамки и объемные тени, чтобы выделяться на фоне */
+
 .player-card {
     background: #ffffff;
-    border: 1px solid rgba(18, 19, 24, 0.15) !important; /* Контрастный контур */
+    border: 1px solid rgba(18, 19, 24, 0.15) !important;
     border-radius: 10px;
     aspect-ratio: 3 / 5;
     position: relative;
@@ -373,7 +349,7 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
-    box-shadow: 0 10px 24px rgba(18, 19, 24, 0.08) !important; /* Глубокая тень */
+    box-shadow: 0 10px 24px rgba(18, 19, 24, 0.08) !important;
 }
 
     .player-card:hover {
@@ -425,16 +401,16 @@ body {
     height: 110px;
     object-fit: contain;
     z-index: -1;
-    filter: grayscale(1) brightness(0.3) !important; /* Угольный силуэт на благородном бежевом */
+    filter: grayscale(1) brightness(0.3) !important;
     opacity: 0.08;
     transform: rotate(-5deg);
     transition: all 0.3s ease;
 }
 
 .player-card:hover .player-card__bg-logo {
-    filter: grayscale(0) brightness(1) !important; /* Намертво сбрасываем монохром */
-    opacity: 0.38 !important; /* Делаем логотип чуть ярче и детальнее */
-    transform: scale(1.1) rotate(0deg) translate(-3px, -3px) !important; /* Легкое смещение */
+    filter: grayscale(0) brightness(1) !important;
+    opacity: 0.38 !important;
+    transform: scale(1.1) rotate(0deg) translate(-3px, -3px) !important;
 }
 
 .player-card__name {
@@ -565,9 +541,7 @@ body {
         accent-color: var(--color-surface-dark);
     }
 
-/* =========================================================================
-   🌟 ИСПРАВЛЕНО: ЖЕСТКАЯ МОБИЛЬНАЯ АДАПТИВНОСТЬ (КАРТОЧКИ БОЛЬШЕ НЕ РАСТЯГИВАЮТСЯ)
-   ========================================================================= */
+
 @media (max-width: 1024px) {
     .team-slots, .market-grid {
         grid-template-columns: repeat(3, 1fr) !important;
@@ -605,16 +579,15 @@ body {
     .section-title {
         display: flex !important;
         flex-direction: row !important;
-        flex-wrap: nowrap !important; /* Запрещает элементам внутри флекса переноситься */
+        flex-wrap: nowrap !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        font-size: 15px !important; /* Компактный размер для 100% совместимости с экранами телефонов */
-        white-space: nowrap !important; /* Железный запрет на перенос слов */
+        font-size: 15px !important;
+        white-space: nowrap !important;
         width: 100% !important;
         overflow: visible !important;
     }
 
-    /* Флекс-контейнер для мобильных сеток */
     .team-slots, .market-grid {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -622,19 +595,17 @@ body {
         justify-content: center !important;
     }
 
-        /* 🔥 ИСПРАВЛЕНО: Жесткое удержание пропорций 3/5 на смартфонах */
         .team-slots .slot, .market-grid .player-card {
             width: calc(50% - 6px) !important;
             max-width: calc(50% - 6px) !important;
-            flex: 0 0 calc(50% - 6px) !important; /* Ровно 2 карточки в ряд */
+            flex: 0 0 calc(50% - 6px) !important;
 
-            aspect-ratio: 3 / 5 !important; /* Удерживает благородную вертикальную форму */
-            height: auto !important; /* Убираем фиксированную высоту, ломавшую верстку */
+            aspect-ratio: 3 / 5 !important;
+            height: auto !important;
             min-height: unset !important;
             box-sizing: border-box !important;
         }
 
-            /* 🔥 ИСПРАВЛЕНО: Карточка внутри слота идеально повторяет его размеры */
             .team-slots .slot .player-card {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -648,18 +619,17 @@ body {
                 background: transparent !important;
             }
 
-    /* 🔥 ИСПРАВЛЕНО: Масштабирование контента внутри золотой плашки на мобильных */
     .player-card__badge {
         padding: 8px !important;
-        padding-top: 14px !important; /* Уменьшили отступы, чтобы вместить текст */
+        padding-top: 14px !important;
     }
 
         .player-card__badge::before {
-            top: -3px !important; /* Корректируем наклон под меньший размер */
+            top: -3px !important;
         }
 
     .player-card__name {
-        font-size: 13px !important; /* Компактный строгий шрифт для мобилок */
+        font-size: 13px !important;
         letter-spacing: 0.1px !important;
     }
 
@@ -673,7 +643,6 @@ body {
         padding: 1px 4px !important;
     }
 
-    /* Блок рейтинга на мобильных */
     .player-card__badge-rating {
         font-size: 9px !important;
         padding: 2px 4px !important;
@@ -698,7 +667,6 @@ body {
         font-size: 10px !important;
     }
 
-    /* Сворачивание шапки */
     #toggle-stats-btn {
         display: flex !important;
         background: var(--color-surface-dark) !important;
@@ -719,10 +687,6 @@ body {
         }
 }
 
-
-/* =========================================================================
-   👑 ИСПРАВЛЕНО: ПОЛНАЯ СТИЛИЗАЦИЯ АДМИНКИ ПОД ОФИЦИАЛЬНУЮ ИНФОГРАФИКУ IEM
-   ========================================================================= */
 .leaderboard-card, .admin-card, .admin-layout {
     background: #ffffff !important;
     border: 1px solid rgba(18, 19, 24, 0.15) !important;
@@ -731,7 +695,6 @@ body {
     padding: 25px !important;
 }
 
-    /* 🌟 ИСПРАВЛЕНО: Убран лишний доп. фон у блоков выбора команд и дедлайна */
     .match-selector, .admin-layout > div {
         background: transparent !important;
         padding: 0 !important;
@@ -739,7 +702,6 @@ body {
         margin-bottom: 25px !important;
     }
 
-    /* 🌟 ИСПРАВЛЕНО: Сливающийся текст дедлайна стал глубоким черным и читаемым */
     .admin-layout label {
         color: var(--color-surface-dark) !important;
         font-family: 'Oswald', sans-serif !important;
@@ -748,12 +710,10 @@ body {
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
-
-/* 🌟 ИСПРАВЛЕНО: Поля выбора команд стилизованы под общий макет */
 select, .admin-input {
     background: #ffffff !important;
     color: #000000 !important;
-    border: 2px solid var(--color-surface-dark) !important; /* Толстая стильная рамка */
+    border: 2px solid var(--color-surface-dark) !important;
     font-family: 'Oswald', sans-serif !important;
     font-weight: 700 !important;
     border-radius: 4px !important;
@@ -777,7 +737,6 @@ select, .admin-input {
         border: 1px solid #111217 !important;
     }
 
-/* 🌟 ИСПРАВЛЕНО: Нижние кнопки админки приведены к чемпионскому стилю */
 #btn-submit-stats {
     background: var(--color-surface-dark) !important;
     color: var(--color-primary) !important;
