@@ -6,7 +6,6 @@
     <title>Рейтинг предсказателей | CS2 Fantasy</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Дополнительные стили для таблицы, гармонирующие с основным style.css */
         .leaderboard-card {
             background: linear-gradient(135deg, rgba(45, 45, 50, 1) 0%, var(--color-surface) 100%);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -60,7 +59,6 @@
             color: var(--color-primary);
             text-align: right;
         }
-        /* Золотая подсветка для топ-1 игрока */
         .top-user td {
             background: rgba(222, 155, 53, 0.05);
         }
@@ -85,7 +83,6 @@
         </div>
     </header>
 
-    <!-- Бегущая строка дублируется для сохранения атмосферы -->
     <div class="ticker-wrapper">
         <div class="ticker__title">HLTV TOP 20</div>
         <div class="ticker" id="ranking-list"></div>
@@ -106,7 +103,6 @@
                             </tr>
                         </thead>
                         <tbody id="leaderboard-rows">
-                            <!-- Загрузка скриптом -->
                             <tr>
                                 <td colspan="3" style="text-align: center; color: var(--color-text-muted);">Загрузка рейтинга...</td>
                             </tr>
@@ -117,7 +113,7 @@
         </section>
     </main>
 
-    <script>// Загрузка топа с сервера
+    <script>
         async function loadLeaderboard() {
             try {
                 const res = await fetch('/api/leaderboard');
@@ -128,7 +124,7 @@
                 if (data.success && data.users.length > 0) {
                     data.users.forEach((user, index) => {
                         const row = document.createElement('tr');
-                        if (index === 0) row.className = 'top-user'; // Подсветить лидера
+                        if (index === 0) row.className = 'top-user';
 
                         row.innerHTML = `
                             <td class="rank-number">#${index + 1}</td>
@@ -145,7 +141,6 @@
             }
         }
 
-        // Логика бегущей строки (HLTV)
         function loadHLTV() {
             const container = document.getElementById('ranking-list');
             if (!container) return;
@@ -156,7 +151,7 @@
             ];
             container.innerHTML = '';
             const html = teams.map((t, i) => `<div class="ranking-item"><span class="ranking-item__place">#${i+1}</span><span class="ranking-item__name">${t.name}</span><span class="ranking-item__points">${t.points}</span></div>`).join('');
-            container.innerHTML = html + html; // дубль
+            container.innerHTML = html + html;
         }
 
         loadLeaderboard();
