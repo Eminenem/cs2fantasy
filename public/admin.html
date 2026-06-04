@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель Ввода Статистики HLTV | CS2 Fantasy</title>
+    <title>Админ панель | CS2 Fantasy</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .admin-layout {
@@ -138,7 +138,7 @@
             </div>
 
             <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <label style="font-weight: bold; color: var(--color-primary); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Установить дату и время начала Тура (HLTV Deadline):</label>
+                <label style="font-weight: bold; color: var(--color-primary); text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px;">Установить дату и время начала Тура:</label>
                 <div style="display: flex; gap: 15px; width: 100%; max-width: 500px;">
                     <input type="datetime-local" id="tour-deadline-input" class="admin-input" style="margin: 0; text-align: left;">
                     <button class="btn" id="btn-save-deadline" style="background: var(--color-primary); color: #000; font-weight: bold; width: auto; white-space: nowrap; padding: 0 25px; border-radius: 6px;">Сохранить время</button>
@@ -153,12 +153,10 @@
                 <input type="password" id="admin-key" class="admin-input" placeholder="Введите секретный ADMIN_SECRET_KEY" style="max-width: 350px; margin: 0;">
 
                 <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%;">
-                    <!-- Кнопка 1: Считает конкретный матч (можно нажимать много раз за тур) -->
                     <button class="btn" id="btn-submit-stats" style="background: var(--color-success); color: #fff; width: auto; padding: 15px 35px; font-weight: bold; border-radius: 6px;">
                         Внести статистику матча
                     </button>
 
-                    <!-- Кнопка 2: Закрывает тур целиком (нажимается 1 раз в самом конце) -->
                     <button class="btn" id="btn-close-tour" style="background: var(--color-danger); color: #fff; width: auto; padding: 15px 35px; font-weight: bold; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
                         Официально закрыть и завершить день
                     </button>
@@ -186,15 +184,14 @@
             { id: 15, name: 'donk', team: 'Spirit', role: 'Рифлер' }
         ];
 
-        // Составляем уникальный список организаций
         const teamsList = [...new Set(PLAYERS.map(p => p.team))];
 
         function initSelectors() {
             const s1 = document.getElementById('team1-select');
             const s2 = document.getElementById('team2-select');
 
-            s1.innerHTML = '<option value="">-- Выберите клуб --</option>';
-            s2.innerHTML = '<option value="">-- Выберите клуб --</option>';
+            s1.innerHTML = '<option value="">-- Выберите команду --</option>';
+            s2.innerHTML = '<option value="">-- Выберите команду --</option>';
 
             teamsList.forEach(t => {
                 s1.innerHTML += `<option value="${t}">${t}</option>`;
@@ -202,7 +199,6 @@
             });
         }
 
-        // Рендеринг инпутов для игроков выбранных клубов
         function generatePlayersTables() {
             const t1 = document.getElementById('team1-select').value;
             const t2 = document.getElementById('team2-select').value;
@@ -267,7 +263,6 @@
             });
         }
 
-        // Сбор данных из полей и отправка на Node.js бэкенд
         document.getElementById('btn-submit-stats').addEventListener('click', async () => {
             const secretKey = document.getElementById('admin-key').value;
             if (!secretKey) { alert("Введите секретный ключ администратора!"); return; }
@@ -313,12 +308,12 @@
             const secretKey = document.getElementById('admin-key').value;
             if (!secretKey) { alert("Введите секретный ключ администратора!"); return; }
 
-            if (!confirm("Вы уверены, что хотите закрыть тур? Это действие очистит текущие составы у всех игроков и откроет рынок для новых трансферов!")) {
+            if (!confirm("Вы уверены, что хотите закрыть тур? Это действие очистит текущие составы у всех игроков и откроет составы!")) {
                 return;
             }
 
             try {
-                const res = await fetch('/api/get-profile', { // временная заглушка роута для проверки связи
+                const res = await fetch('/api/get-profile', {
                     method: 'GET'
                 });
                 const response = await fetch('/api/admin/close-tour', {
@@ -339,14 +334,12 @@
             }
         });
 
-        // Декоративный бегущий текст в шапке
         function loadHLTV() {
             const container = document.getElementById('ranking-list');
             if (container) {
                 container.innerHTML = '<div class="ranking-item"><span class="ranking-item__place">★</span><span class="ranking-item__name">ADMIN PROTOCOL MODE</span><span class="ranking-item__points">SECURE</span></div>';
             }
         }
-        // Обработчик сохранения времени дедлайна на сервер
         document.getElementById('btn-save-deadline').addEventListener('click', async () => {
             const secretKey = document.getElementById('admin-key').value;
             const deadline = document.getElementById('tour-deadline-input').value;
@@ -362,7 +355,7 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    alert("Время начала тура успешно сохранено в базу данных Firebase!");
+                    alert("Время начала тура успешно сохранено!");
                 } else {
                     alert("Ошибка: " + data.message);
                 }
