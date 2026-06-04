@@ -8,21 +8,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Раздаем статические файлы фронтенда из папки public
 app.use(express.static(path.join(__dirname, 'public')));
 
 let serviceAccount;
 
 try {
     if (process.env.FIREBASE_KEYS_JSON) {
-        // Если мы в облаке Vercel, парсим текст из Environment Variables
         serviceAccount = JSON.parse(process.env.FIREBASE_KEYS_JSON);
     } else {
-        // Если мы тестируем локально на ПК, читаем файл из корня
         serviceAccount = require('../firebase-keys.json');
     }
 
-    // Инициализируем Firebase Admin, только если он еще не поднят
     if (admin.apps.length === 0) {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
@@ -34,7 +30,6 @@ try {
 
 const db = admin.firestore();
 
-// Весь список игроков дублируем на бэкенде для безопасных расчетов очков
 const PLAYERS = [
     { id: 1, name: 'apEx', team: 'Vitality', role: 'Капитан', rating: 0.99 },
     { id: 2, name: 'ropz', team: 'Vitality', role: 'Рифлер', rating: 1.18 },
@@ -52,7 +47,7 @@ const PLAYERS = [
     { id: 14, name: 'zont1x', team: 'Spirit', role: 'Рифлер', rating: 0.95 },
     { id: 15, name: 'donk', team: 'Spirit', role: 'Рифлер', rating: 1.41 }
 ];
-// Middleware для проверки Firebase токена пользователя
+
 const authenticateFirebaseToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -68,8 +63,6 @@ const authenticateFirebaseToken = async (req, res, next) => {
     }
 };
 
-// Загрузка профиля (очки + текущий состав + статус блокировки)
-// Загрузка профиля пользователя + глобальных настроек турнира (дедлайна)
 app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
     try {
         const userDoc = await db.collection('users').doc(req.user.uid).get();
@@ -94,13 +87,14 @@ app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
         res.json({
             success: true,
             data: {
-                username: userData.username || req.user.email.split('@')[0], // Защита: если никнейма нет, берем часть почты
+                username: userData.username || req.user.email.split('@')[0],
                 email: userData.email || req.user.email,
                 score: userData.score || 0,
                 isLocked: isLocked,
                 currentTeam: userData.currentTeam || [],
                 starPlayerId: userData.starPlayerId || null,
-                deadline: deadline
+                deadline: deadline,
+                history: userData.history || []
             }
         });
     } catch (err) {
@@ -109,17 +103,16 @@ app.get('/api/get-profile', authenticateFirebaseToken, async (req, res) => {
 });
 
 
-// Создание базового профиля при первой авторизации
 app.post('/api/create-profile', authenticateFirebaseToken, async (req, res) => {
     try {
-        const { username } = req.body; // Забираем никнейм из тела запроса
+        const { username } = req.body;
         const userRef = db.collection('users').doc(req.user.uid);
         const doc = await userRef.get();
 
         if (!doc.exists) {
             await userRef.set({
                 email: req.user.email,
-                username: username || req.user.email.split('@')[0], // сохраняем никнейм
+                username: username || req.user.email.split('@')[0],
                 score: 0,
                 isLocked: false,
                 currentTeam: [],
@@ -147,13 +140,11 @@ app.post('/api/lock-team', authenticateFirebaseToken, async (req, res) => {
             return res.status(400).json({ success: false, message: "Ваш состав уже заблокирован на этот тур!" });
         }
 
-        // 1. Проверяем уникальность ID (защита от копирования одного сильного игрока)
         const uniqueIds = [...new Set(teamIds)];
         if (uniqueIds.length !== 5) {
             return res.status(400).json({ success: false, message: "В команде не может быть дубликатов игроков!" });
         }
 
-        // 2. Проверяем строгие лимиты организаций (не более 2 из одного клуба)
         const teamCounts = {};
         const slotsValidation = [
             { role: 'Капитан', player: null },
@@ -171,29 +162,24 @@ app.post('/api/lock-team', authenticateFirebaseToken, async (req, res) => {
                 return res.status(400).json({ success: false, message: "Один из игроков не найден в официальной базе!" });
             }
 
-            // Считаем лимит организации
             teamCounts[player.team] = (teamCounts[player.team] || 0) + 1;
             if (teamCounts[player.team] > 2) {
                 return res.status(400).json({ success: false, message: `Нарушен лимит клуба! Нельзя брать больше 2 игроков из ${player.team}.` });
             }
 
-            // Привязываем игрока к проверяемому слоту
             slotsValidation[i].player = player;
         }
 
-        // 3. Проверяем соответствие ролей игроков их слотам на фронтенде
         for (let i = 0; i < slotsValidation.length; i++) {
             if (slotsValidation[i].player.role !== slotsValidation[i].role) {
                 return res.status(400).json({ success: false, message: `Нарушено распределение позиций! Игрок ${slotsValidation[i].player.name} не подходит на роль ${slotsValidation[i].role}.` });
             }
         }
 
-        // 4. Проверяем, входит ли звездный игрок в текущий состав
         if (!teamIds.includes(starPlayerId)) {
             return res.status(400).json({ success: false, message: "Звездный игрок должен быть частью вашей команды!" });
         }
 
-        // Если все проверки пройдены — сохраняем в базу данных
         await userRef.update({
             currentTeam: teamIds,
             starPlayerId: starPlayerId,
@@ -206,14 +192,12 @@ app.post('/api/lock-team', authenticateFirebaseToken, async (req, res) => {
     }
 });
 
-// Эндпоинт таблицы лидеров (ТОП предсказателей)
 app.get('/api/leaderboard', async (req, res) => {
     try {
         const snapshot = await db.collection('users').orderBy('score', 'desc').get();
         const users = [];
         snapshot.forEach(doc => {
             const data = doc.data();
-            // 🔒 Публикуем в общий доступ исключительно никнейм (username)
             users.push({ username: data.username || 'Anonymous', score: data.score || 0 });
         });
         res.json({ success: true, users });
@@ -221,7 +205,7 @@ app.get('/api/leaderboard', async (req, res) => {
         res.status(500).json({ success: false, message: err.message });
     }
 });
-// 👑 ОБНОВЛЕННЫЙ АДМИНСКИЙ ЭНДПОИНТ: РАСЧЕТ МАТЧА ПО РЕАЛЬНЫМ ДАННЫМ HLTV
+
 app.post('/api/admin/submit-match-stats', async (req, res) => {
     const { secretKey, playerStats } = req.body;
 
@@ -235,7 +219,6 @@ app.post('/api/admin/submit-match-stats', async (req, res) => {
     try {
         const calculatedPlayerPoints = {};
 
-        // [Ваша математика подсчета очков игроков остается без изменений]
         for (const playerId in playerStats) {
             const stats = playerStats[playerId];
             const pId = parseInt(playerId);
@@ -285,7 +268,6 @@ app.post('/api/admin/submit-match-stats', async (req, res) => {
         usersSnapshot.forEach(userDoc => {
             const userData = userDoc.data();
 
-            // Начисляем очки только если состав закреплен
             if (userData.isLocked && userData.currentTeam && userData.currentTeam.length === 5) {
                 let userMatchPoints = 0;
 
@@ -304,7 +286,6 @@ app.post('/api/admin/submit-match-stats', async (req, res) => {
                     const newScore = (userData.score || 0) + userMatchPoints;
                     const userRef = db.collection('users').doc(userDoc.id);
 
-                    // 🔥 ИСПРАВЛЕНО: Просто обновляем очки. НЕ сбрасываем состав и НЕ открываем рынок!
                     batch.update(userRef, { score: newScore });
                 }
             }
@@ -318,7 +299,6 @@ app.post('/api/admin/submit-match-stats', async (req, res) => {
     }
 });
 
-// 👑 2. НОВЫЙ ЭНДПОИНТ: ОФИЦИАЛЬНОЕ ЗАКРЫТИЕ ВСЕГО ТУРА (ОТКРЫВАЕТ РЫНОК ДЛЯ СЛЕДУЮЩЕГО ТУРА)
 app.post('/api/admin/close-tour', async (req, res) => {
     const { secretKey } = req.body;
     if (secretKey !== process.env.ADMIN_SECRET_KEY) {
@@ -333,11 +313,9 @@ app.post('/api/admin/close-tour', async (req, res) => {
             const userData = userDoc.data();
             const userRef = db.collection('users').doc(userDoc.id);
 
-            // Если у пользователя был состав в этом туре, берем его историю или создаем массив
             const history = userData.history || [];
 
             if (userData.currentTeam && userData.currentTeam.length === 5) {
-                // Записываем архивный слепок тура
                 history.push({
                     tour: history.length + 1,
                     team: userData.currentTeam,
@@ -345,12 +323,11 @@ app.post('/api/admin/close-tour', async (req, res) => {
                 });
             }
 
-            // Очищаем активные слоты для трансферов на следующий тур, сохраняя историю
             batch.update(userRef, {
                 isLocked: false,
                 currentTeam: [],
                 starPlayerId: null,
-                history: history // отправляем обновленный архив в Firebase
+                history: history
             });
         });
 
@@ -361,7 +338,6 @@ app.post('/api/admin/close-tour', async (req, res) => {
     }
 });
 
-// Эндпоинт для админа: Установка времени дедлайна тура
 app.post('/api/admin/set-deadline', async (req, res) => {
     const { secretKey, deadline } = req.body;
     if (secretKey !== process.env.ADMIN_SECRET_KEY) return res.status(403).json({ error: "Отказ" });
@@ -374,7 +350,4 @@ app.post('/api/admin/set-deadline', async (req, res) => {
     }
 });
 
-// Запуск приложения
-//const PORT = process.env.PORT || 5000;
-//app.listen(PORT, () => console.log(`🚀 Сервер запущен на http://localhost:${PORT}`));
 module.exports = app;
