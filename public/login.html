@@ -113,7 +113,6 @@
     </style>
 </head>
 <body>
-    <!-- 🏆 ОФИЦИАЛЬНЫЙ СВЕТЛЫЙ ПРЕРОЛЛ ЗАГРУЗКИ IEM COLOGNE 2026 -->
     <div id="site-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f4f5f7; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s; background-image: radial-gradient(circle at center, #ffffff 0%, #f4f5f7 100%);">
 
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; background-image: linear-gradient(30deg, transparent 49.5%, #c5b59f 50%, transparent 50.5%), linear-gradient(-30deg, transparent 49.5%, #7e8494 50%, transparent 50.5%); background-size: 160px 276px; z-index: 1;"></div>
@@ -125,7 +124,7 @@
             <div style="width: 200px; height: 3px; background: rgba(18, 19, 24, 0.05); border-radius: 2px; overflow: hidden; position: relative; border: 1px solid rgba(18, 19, 24, 0.02);">
                 <div style="width: 70px; height: 100%; background: linear-gradient(90deg, #fbf7eb, #c5b59f); position: absolute; border-radius: 2px; animation: loadingBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 8px rgba(197, 181, 159, 0.4);"></div>
             </div>
-            <p style="color: #7e8494; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 18px; font-weight: 700; font-family: 'Share Tech Mono', monospace;">Connecting to IEM registry database...</p>
+            <p style="color: #7e8494; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 18px; font-weight: 700; font-family: 'Share Tech Mono', monospace;">Пожалуйста подождите...</p>
         </div>
     </div>
 
@@ -149,9 +148,8 @@
     <div class="auth-card">
         <div class="auth-title">CS2 <span>Fantasy League</span></div>
 
-        <!-- Уведомление о необходимости подтвердить почту -->
         <div class="verification-notice" id="verify-box">
-            📥 На вашу почту отправлено письмо со ссылкой. Пожалуйста, <b>подтвердите ваш Email</b>, после чего нажмите «Войти» снова.
+            На вашу почту отправлено письмо со ссылкой. Пожалуйста, <b>подтвердите ваш Email</b>, после чего нажмите «Войти» снова.
         </div>
 
         <div class="auth-tabs">
@@ -159,16 +157,13 @@
             <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Регистрация</button>
         </div>
 
-        <!-- ФОРМА ВХОДА -->
         <form id="login-form" class="auth-form active">
             <div class="input-group"><input type="email" id="login-email" placeholder="Ваш Email" required></div>
             <div class="input-group"><input type="password" id="login-password" placeholder="Пароль" required></div>
             <button type="submit" class="btn btn--primary" style="width:100%; padding:14px;">Войти в аккаунт</button>
         </form>
 
-        <!-- ФОРМА РЕГИСТРАЦИИ -->
         <form id="register-form" class="auth-form">
-            <!-- 🔥 НОВОЕ: Поле для ввода публичного никнейма -->
             <div class="input-group"><input type="text" id="reg-username" placeholder="Придумайте Никнейм (публичный)" required maxlength="20"></div>
             <div class="input-group"><input type="email" id="reg-email" placeholder="Введите ваш Email" required></div>
             <div class="input-group"><input type="password" id="reg-password" placeholder="Пароль (минимум 6 символов)" required></div>
@@ -186,7 +181,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ⚠️ ВСТАВЬТЕ СЮДА ВАШ ЛИЧНЫЙ КОНФИГ FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCQXDvtgf5H94bbxHHOYsGKWOnMmfyvfUo",
             authDomain: "cs2-fantasy-c902e.firebaseapp.com",
@@ -199,7 +193,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Переключение Вход / Регистрация
         window.switchTab = function (mode) {
             document.getElementById('verify-box').style.display = 'none';
             if (mode === 'login') {
@@ -226,16 +219,14 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Проверяем, кликнул ли пользователь по ссылке в письме
                 if (!user.emailVerified) {
                     verifyBox.style.display = 'block';
-                    verifyBox.innerHTML = `⚠️ Ваша почта не подтверждена! Мы отправили вам новое письмо. Проверьте входящие или спам.`;
-                    await sendEmailVerification(user); // Отправляем повторное письмо для удобства
-                    auth.signOut(); // Вылогиниваем, так как доступа быть не должно
+                    verifyBox.innerHTML = `Ваша почта не подтверждена! Мы отправили вам новое письмо. Проверьте входящие или спам.`;
+                    await sendEmailVerification(user);
+                    auth.signOut();
                     return;
                 }
 
-                // Если почта подтверждена, забираем токен и пускаем на сайт
                 const token = await user.getIdToken();
                 localStorage.setItem('token', token);
                 window.location.href = '/index.html';
@@ -245,7 +236,6 @@
             }
         });
 
-        // ЛОГИКА РЕГИСТРАЦИИ
         document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('reg-email').value;
@@ -259,21 +249,20 @@
             }
 
             try {
-                const username = document.getElementById('reg-username').value.trim(); // Читаем никнейм
+                const username = document.getElementById('reg-username').value.trim();
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
                 await sendEmailVerification(user);
 
                 const token = await user.getIdToken();
-                // 🔥 Передаем введенный никнейм на бэкенд при создании профиля
                 await fetch('/api/create-profile', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ username }) // отправляем никнейм в JSON
+                    body: JSON.stringify({ username })
                 });
 
                 auth.signOut();
