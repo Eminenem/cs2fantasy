@@ -102,6 +102,11 @@
             font-style: italic;
         }
     </style>
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
 </head>
 <body>
     <header class="header">
