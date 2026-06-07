@@ -38,48 +38,62 @@ const teamCountEl = document.getElementById('team-count');
 
 async function init() {
     const token = localStorage.getItem('token');
-    if (token) {
-        try {
-            const response = await fetch('/api/get-profile', {
-                method: 'GET',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
 
-            const data = await response.json();
-            if (data && data.success) {
-                state.score = data.data.score || 0;
-                state.isLocked = data.data.isLocked || false;
-                state.userHistory = data.data.history || [];
+    if (!token) {
+        window.location.href = '/login.html';
+        return;
+    }
 
-                const usernameEl = document.getElementById('current-username');
-                if (usernameEl) {
-                    usernameEl.textContent = data.data.username || "Player";
-                }
+    try {
+        const response = await fetch('/api/get-profile', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-                if (data.data.currentTeam && data.data.currentTeam.length > 0) {
-                    data.data.currentTeam.forEach((id, idx) => {
-                        const foundPlayer = PLAYERS.find(p => p.id === id);
-                        if (foundPlayer && idx < state.myTeam.length) {
-                            state.myTeam[idx].player = foundPlayer;
-                        }
-                    });
-                    if (data.data.starPlayerId) {
-                        const starIdx = data.data.currentTeam.indexOf(data.data.starPlayerId);
-                        if (starIdx !== -1) state.starPlayerIndex = starIdx;
+        if (response.status === 401 || response.status === 403) {
+            console.warn("Сессия устарела (ошибка 403). Очистка памяти и перенаправление...");
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+            return;
+        }
+
+        if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
+
+        const data = await response.json();
+        if (data && data.success) {
+            state.score = data.data.score || 0;
+            state.isLocked = data.data.isLocked || false;
+            state.userHistory = data.data.history || [];
+            const usernameEl = document.getElementById('current-username');
+            if (usernameEl) {
+                usernameEl.textContent = data.data.username || "Player";
+            }
+
+            if (data.data.currentTeam && data.data.currentTeam.length > 0) {
+                data.data.currentTeam.forEach((id, idx) => {
+                    const foundPlayer = PLAYERS.find(p => p.id === id);
+                    if (foundPlayer && idx < state.myTeam.length) {
+                        state.myTeam[idx].player = foundPlayer;
                     }
-                }
-
-                if (data.data.deadline) {
-                    startDeadlineCountdown(data.data.deadline);
-                } else {
-                    const timerEl = document.getElementById('countdown-timer');
-                    if (timerEl) timerEl.textContent = "Время не установлено";
+                });
+                if (data.data.starPlayerId) {
+                    const starIdx = data.data.currentTeam.indexOf(data.data.starPlayerId);
+                    if (starIdx !== -1) state.starPlayerIndex = starIdx;
                 }
             }
-        } catch (err) {
-            console.error("Ошибка загрузки профиля с сервера:", err);
+
+            if (data.data.deadline) {
+                startDeadlineCountdown(data.data.deadline);
+            } else {
+                const timerEl = document.getElementById('countdown-timer');
+                if (timerEl) timerEl.textContent = "Время не установлено";
+            }
         }
+    } catch (err) {
+        console.error("Ошибка загрузки профиля с сервера:", err);
+        localStorage.removeItem('token');
+        window.location.href = '/login.html';
+        return;
     }
 
     if (scoreEl) scoreEl.textContent = state.score.toString();
@@ -89,12 +103,14 @@ async function init() {
     if (typeof loadHLTVTeamRankings === 'function') {
         loadHLTVTeamRankings();
     }
+
     const loader = document.getElementById('site-loader');
     if (loader) {
         loader.style.opacity = '0';
         loader.style.visibility = 'hidden';
     }
 }
+
 
 
 function getTeamCountInFantasy(teamName) {
