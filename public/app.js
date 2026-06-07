@@ -410,3 +410,13 @@ window.closeHistoryModal = function () {
     const modal = document.getElementById('history-modal');
     if (modal) modal.style.display = 'none';
 };
+
+window.openGuideModal = function () {
+    const modal = document.getElementById('guide-modal');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.closeGuideModal = function () {
+    const modal = document.getElementById('guide-modal');
+    if (modal) modal.style.display = 'none';
+};
