@@ -115,8 +115,21 @@
 
     <script>
         async function loadLeaderboard() {
+            const token = localStorage.getItem('token');
+            if (!token) { window.location.href = '/login.html'; return; }
+
             try {
-                const res = await fetch('/api/leaderboard');
+                const res = await fetch('/api/leaderboard', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.status === 401 || res.status === 403) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
                 const data = await res.json();
                 const container = document.getElementById('leaderboard-rows');
                 container.innerHTML = '';
